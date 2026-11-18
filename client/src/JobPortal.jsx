@@ -18,7 +18,7 @@ function sourceSearch(source,q,location){
  return "https://www.google.com/search?q="+encodeURIComponent((q||"software developer")+" jobs "+(location||"India"));
 }
 function JobPortal(){
- const [query,Q]=useState(""),[place,P]=useState("India"),[sourceFilter,F]=useState("All"),[jobs,J]=useState([]),[applications,A]=useState([]),[loading,L]=useState(false),[error,E]=useState(""),[notice,N]=useState(""),[showTracker,ST]=useState(false),[resumeFile,RF]=useState(null),[matching,MT]=useState(false),[resumeProfile,RP]=useState(null),[isRecommended,IR]=useState(false);
+ const [query,Q]=useState(""),[place,P]=useState("India"),[searchMode,SM]=useState("title"),[sourceFilter,F]=useState("All"),[jobs,J]=useState([]),[applications,A]=useState([]),[loading,L]=useState(false),[error,E]=useState(""),[notice,N]=useState(""),[showTracker,ST]=useState(false),[resumeFile,RF]=useState(null),[matching,MT]=useState(false),[resumeProfile,RP]=useState(null),[isRecommended,IR]=useState(false);
  const loadApplications=useCallback(async()=>{try{const{data}=await api.get("/applications");A(data)}catch(e){E(e.response?.data?.message||"Could not load your application tracker. Check database configuration.")}},[]);
  const searchJobs=useCallback(async(term=query,location=place)=>{L(true);E("");try{const{data}=await api.get("/jobs/search",{params:{q:term,location}});J(data.jobs||[]);if(data.warnings?.length)E(data.warnings.join(" "))}catch(e){E(e.response?.data?.message||"Live job search is temporarily unavailable. Use the source search links below.")}finally{L(false)}},[query,place]);
 
@@ -42,10 +42,18 @@ function JobPortal(){
  async function updateStatus(id,status){try{await api.patch("/applications/"+id,{status});await loadApplications();N("Application status updated.")}catch(e){E(e.response?.data?.message||"Could not update application status.")}}
  async function removeApplication(id){try{await api.delete("/applications/"+id);await loadApplications();N("Removed from your tracker.")}catch(e){E(e.response?.data?.message||"Could not remove this application.")}}
  const sourceLinks=["LinkedIn","Naukri","Indeed","Glassdoor","Wellfound","Instahyre"].map(s=>({name:s,url:sourceSearch(s,query,place)}));
+ const demoJobs=demoTitles.map((title,i)=>({title,level:["Entry level","Junior","Fresher friendly","0–2 years"][i%4],tags:["Java","Spring Boot","React","Node.js","Python","AI/ML","SQL","Security","AWS","Testing","Android","Power BI"][i%12]}));
  return <><div className="pagehead"><div><small className="eyebrow">ONE PLACE FOR YOUR JOB SEARCH</small><h1>CareerPilot Job Hub</h1><p>Discover live openings, save roles and track every application.</p></div><button className="soft" onClick={()=>{ST(!showTracker);if(!showTracker)loadApplications()}}><ClipboardList size={16}/> {showTracker?"Browse jobs":"My applications"} ({applications.length})</button></div>
  {notice&&<div className="notice" onClick={()=>N("")}>{notice}　×</div>}{error&&<div className="notice job-error">{error}</div>}
 
- <section className="resume-job-match panel">
+ <section className="job-search-mode panel">
+  <div><small className="eyebrow">CHOOSE HOW TO FIND YOUR NEXT ROLE</small><h3>How would you like to search?</h3><p>Find suitable openings from your resume, or search directly by a job title.</p></div>
+  <div className="job-mode-switch">
+   <button className={searchMode==="title"?"active":""} onClick={()=>{SM("title");IR(false);}}> <Search size={16}/> Search by job title</button>
+   <button className={searchMode==="resume"?"active":""} onClick={()=>{SM("resume");}}> <Sparkles size={16}/> Match jobs to my resume</button>
+  </div>
+ </section>
+ {searchMode==="resume"&&<section className="resume-job-match panel">
   <div className="resume-job-match-heading"><div className="resume-job-match-icon"><Sparkles size={20}/></div><div><h3>Find jobs that match your resume</h3><p>Upload your own resume. AI will identify your skills and suitable job titles, then rank live listings by relevance.</p></div></div>
   <div className="resume-job-match-controls">
    <label className="resume-job-file">Upload your resume (PDF or DOCX)<input type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={e=>RF(e.target.files?.[0]||null)}/></label>
@@ -56,7 +64,11 @@ function JobPortal(){
   <small className="resume-job-privacy">Your resume is processed to extract job-related skills and is not added to your public profile. Use a text-based PDF or DOCX; scanned PDFs need OCR.</small>
  </section>
  {resumeProfile&&<section className="panel resume-profile-result"><div><small className="eyebrow">YOUR RESUME PROFILE</small><h3>{resumeProfile.headline||"Recommended career matches"}</h3><p>{resumeProfile.summary}</p></div><div className="resume-profile-tags"><b>Suggested roles</b>{(resumeProfile.jobTitles||[]).map(x=><span key={x}>{x}</span>)}</div><div className="resume-profile-tags"><b>Detected skills</b>{(resumeProfile.skills||[]).map(x=><span key={x}>{x}</span>)}</div><small>Experience level: {resumeProfile.experienceLevel||"Not specified"} · Match scores are estimates based on visible job text, not hiring predictions.</small></section>}
- <section className="job-search panel"><div className="job-search-fields"><label>Job title or skills<input value={query} onChange={e=>Q(e.target.value)} onKeyDown={e=>e.key==="Enter"&&searchJobs()} placeholder="Java developer, React, data analyst…"/></label><label>Location<input value={place} onChange={e=>P(e.target.value)} onKeyDown={e=>e.key==="Enter"&&searchJobs()} placeholder="India, Bengaluru, Remote…"/></label><button className="primary job-search-button" disabled={loading} onClick={()=>searchJobs()}>{loading?<RefreshCw size={15} className="spin"/>:<Search size={15}/>} Search jobs</button></div>
+ {searchMode==="title"&&<section className="job-title-demo panel">
+  <div className="demo-title-heading"><div><h3>Try a job title</h3><p>Choose from these 16 sample job searches, or type your own title below.</p></div><span>16 suggestions</span></div>
+  <div className="demo-title-grid">{demoJobs.map((d,i)=><button key={d.title} onClick={()=>{Q(d.title);IR(false);searchJobs(d.title,place)}}><b>{d.title}</b><small>{d.level} · {d.tags}</small></button>)}</div>
+ </section>}
+ {searchMode==="title"&&<section className="job-search panel"><div className="job-search-fields"><label>Job title or skills<input value={query} onChange={e=>Q(e.target.value)} onKeyDown={e=>e.key==="Enter"&&searchJobs()} placeholder="Java developer, React, data analyst…"/></label><label>Location<input value={place} onChange={e=>P(e.target.value)} onKeyDown={e=>e.key==="Enter"&&searchJobs()} placeholder="India, Bengaluru, Remote…"/></label><button className="primary job-search-button" disabled={loading} onClick={()=>searchJobs()}>{loading?<RefreshCw size={15} className="spin"/>:<Search size={15}/>} Search jobs</button></div>
  <div className="job-note"><Globe2 size={15}/> Listings below are fetched from public job-board feeds. LinkedIn, Naukri and Indeed open their own search pages; direct listing APIs require provider approval.</div>
  <div className="job-source-links">{sourceLinks.map(s=><a href={s.url} target="_blank" rel="noopener noreferrer" key={s.name}>{s.name} search <ExternalLink size={12}/></a>)}</div></section>
  {showTracker?<section className="panel application-tracker"><div className="tracker-heading"><div><h3>Application tracker</h3><p>Keep your job-search progress organized.</p></div><span className="job-count">{applications.length} tracked</span></div>
