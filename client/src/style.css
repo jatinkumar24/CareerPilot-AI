@@ -11,3 +11,35 @@
 .preview-mode .content .preview-banner button{pointer-events:auto;opacity:1}
 .preview-mode .content .pagehead button,.preview-mode .content .empty button{opacity:.45}
 @media(max-width:620px){.skip-preview{right:22px;top:24px}.back{left:22px;top:24px}.auth main{padding-top:85px}}
+
+
+/* Job Portal */
+.job-count{font-size:11px;color:#7867d6;background:#efedff;border-radius:20px;padding:9px 13px;font-weight:700}
+.job-search{margin-bottom:16px}
+.job-search-fields{display:grid;grid-template-columns:1.5fr 1fr .8fr .8fr;gap:12px}
+.job-search-fields label{display:grid;gap:7px;font-size:10px;font-weight:700;color:#596176}
+.job-search-fields input,.job-search-fields select{width:100%;border:1px solid #e0e3eb;border-radius:8px;padding:11px;background:#fff;color:#293249;font-size:11px;outline:none}
+.job-search-fields input:focus,.job-search-fields select:focus{border-color:#8974ef;box-shadow:0 0 0 3px #8974ef1b}
+.job-note{display:flex;align-items:center;gap:8px;margin-top:13px;padding-top:12px;border-top:1px solid #edf0f4;color:#8b839f;font-size:10px}
+.job-note svg{color:#806ae7}
+.job-list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.job-card{padding:18px}
+.job-card-top{display:flex;align-items:center;gap:11px}
+.job-company-icon{width:40px;height:40px;display:grid;place-items:center;background:#f0edff;color:#7866dc;border-radius:10px}
+.job-title-wrap{flex:1;min-width:0}
+.job-title-wrap h3{font:700 13px Manrope;margin:0 0 5px;color:#273047}
+.job-title-wrap p{font-size:10px;color:#8790a1;margin:0}
+.job-save{border:1px solid #e5e2f5;background:#faf9ff;color:#6e5bc9;border-radius:7px;padding:8px 10px;font-size:10px;font-weight:700}
+.job-save.saved{background:#eaf8f2;color:#328568;border-color:#d6eee4}
+.job-meta{display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 12px}
+.job-meta span{font-size:9px;color:#717b90;background:#f5f6fa;border-radius:5px;padding:6px 8px}
+.job-desc{font-size:10px;line-height:1.7;color:#737d91;min-height:50px}
+.job-chips{margin:12px 0 15px}
+.job-chips span{background:#f1efff;color:#6e5bc9}
+.job-card-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #edf0f4;padding-top:12px}
+.job-card-bottom small{font-size:8px;color:#9aa1af}
+.job-disabled{border:0;background:#f0f1f5;color:#969dad;border-radius:7px;padding:8px 10px;font-size:9px;font-weight:700;cursor:not-allowed}
+.job-empty{text-align:center;grid-column:1/-1;padding:45px 15px;color:#8371dc}
+.job-empty h3{color:#293249}.job-empty p{font-size:10px;color:#8992a3}
+@media(max-width:900px){.job-search-fields{grid-template-columns:1fr 1fr}.job-list{grid-template-columns:1fr}}
+@media(max-width:620px){.job-search-fields{grid-template-columns:1fr}.job-card-bottom{align-items:flex-start;flex-direction:column}.job-count{align-self:flex-start}}
