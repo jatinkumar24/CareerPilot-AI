@@ -277,6 +277,36 @@ router.delete("/applications/:id", auth, wrap(async (req, res) => {
   res.json({ message: "Application removed." });
 }));
 
+
+router.post("/roadmap/generate", auth, wrap(async (req, res) => {
+  if (!process.env.GEMINI_API_KEY) return res.status(503).json({ message: "AI roadmap generation is not configured. Add GEMINI_API_KEY to Vercel environment variables." });
+  const raw = req.body?.resume || {};
+  const targetRole = String(req.body?.targetRole || "Java Full Stack Developer").slice(0,100);
+  const resume = {
+    headline: String(raw.personal?.headline || "").slice(0,180),
+    summary: String(raw.personal?.summary || "").slice(0,1800),
+    skills: Array.isArray(raw.skills) ? raw.skills.slice(0,80).map(x=>String(x).slice(0,80)) : [],
+    experience: Array.isArray(raw.experience) ? raw.experience.slice(0,8).map(x=>({role:x.role,company:x.company,details:x.details})) : [],
+    education: Array.isArray(raw.education) ? raw.education.slice(0,6).map(x=>({degree:x.degree,institution:x.institution,year:x.year})) : [],
+    projects: Array.isArray(raw.projects) ? raw.projects.slice(0,10).map(x=>({name:x.name,tech:x.tech,details:x.details})) : []
+  };
+  if (!resume.skills.length && !resume.summary && !resume.projects.length) return res.status(400).json({message:"The selected resume has too little information. Add skills, education or projects and save it first."});
+  const prompt = "You are a practical software career mentor. Create a personalized learning roadmap for the target role using only the resume facts below. Be honest about demonstrated vs merely listed skills. Do not invent experience, certifications or achievements. Use a sensible beginner-to-entry-level progression, prioritize gaps, include projects that can be completed by an MCA student, and avoid repeating topics already clearly demonstrated except for brief revision. The user is an early-career candidate. Return ONLY JSON with this schema: {title:string,summary:string,duration:string,level:string,readinessScore:number,strengths:string[],skillGaps:string[],phases:[{title:string,duration:string,objective:string,topics:string[],tasks:string[],project:string}],disclaimer:string}. Provide 4-6 phases, each with 3-6 topics and 2-4 tasks. Use realistic time estimates. Score is an indicative estimate 0-100, not a hiring prediction. Target role: "+targetRole+". Resume JSON: "+JSON.stringify(resume);
+  const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="+encodeURIComponent(process.env.GEMINI_API_KEY),{
+    method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{responseMimeType:"application/json",temperature:0.3}}),
+    signal:AbortSignal.timeout(55000)
+  });
+  const payload=await response.json();
+  if(!response.ok)return res.status(502).json({message:payload.error?.message||"AI roadmap generation failed. Please try again."});
+  const output=payload.candidates?.[0]?.content?.parts?.map(p=>p.text||"").join("")||"";
+  let roadmap;
+  try{roadmap=JSON.parse(output)}catch{return res.status(502).json({message:"The AI returned an unreadable roadmap. Please try again."})}
+  if(!Array.isArray(roadmap.phases)||!roadmap.phases.length)return res.status(502).json({message:"The AI roadmap was incomplete. Please try again."});
+  roadmap.readinessScore=Math.max(0,Math.min(100,Number(roadmap.readinessScore)||0));
+  res.json(roadmap);
+}));
+
 const roles = {
   "MERN Stack Developer": ["JavaScript","React","Node.js","Express.js","MongoDB","REST APIs","Git","HTML","CSS","Authentication","Deployment"],
   "Java Developer": ["Java","OOP","Data Structures","Algorithms","Spring Boot","SQL","REST APIs","Git","JUnit","Maven"],
