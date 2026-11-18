@@ -21,15 +21,7 @@ function Roadmap({resumes=[],preview=false,onMessage=()=>{}}){
   catch(e){setError(e.response?.data?.message||"Could not generate your roadmap. Please try again.")}
   finally{setBusy(false)}
  }
- const paths=[
-  {role:"Java Full Stack Developer",description:"Build production-ready web applications with Java, Spring Boot, React and databases.",stages:["Java, OOP and DSA foundations","SQL, database design and persistence","Spring Boot, REST APIs and security","React, JavaScript and full-stack integration","Testing, deployment and interview projects"],icon:"☕"},
-  {role:"Backend Developer (Java)",description:"Design secure, scalable APIs and services using Java and modern backend tools.",stages:["Core Java, OOP and collections","SQL, MySQL and data modelling","Spring Boot and REST API development","Authentication, testing and system design","Docker, cloud deployment and portfolio"],icon:"⌘"},
-  {role:"AI Engineer",description:"Create useful AI-powered applications by combining software engineering, Python and modern AI systems.",stages:["Python, programming and Git foundations","Math, data handling and machine learning basics","Neural networks and model evaluation","LLMs, embeddings and retrieval-augmented generation","AI application deployment and evaluation"],icon:"✦"},
-  {role:"Cyber Security",description:"Develop practical skills in networks, operating systems, defensive security and ethical testing.",stages:["Networking, Linux and operating system basics","Security fundamentals and scripting","Web security and vulnerability assessment","Blue-team monitoring and incident response","Hands-on labs, reporting and certifications plan"],icon:"◇"},
-  {role:"MERN Stack Developer",description:"Build complete web products with MongoDB, Express, React and Node.js.",stages:["HTML, CSS, JavaScript and Git","React, components and state management","Node.js, Express and REST APIs","MongoDB, authentication and integration","Testing, deployment and portfolio projects"],icon:"⌘"},
-  {role:"Frontend Developer",description:"Create accessible, responsive and polished interfaces with modern JavaScript and React.",stages:["HTML, CSS and responsive layouts","JavaScript and browser fundamentals","React, routing and state management","TypeScript, accessibility and testing","Performance, deployment and portfolio"],icon:"◉"},
-  {role:"Data Analyst",description:"Turn raw data into clear insights using SQL, Python, spreadsheets and visualization.",stages:["Spreadsheets and analytical thinking","SQL querying and data cleaning","Python, pandas and exploratory analysis","Power BI or Tableau dashboards","Business case studies and portfolio"],icon:"▥"}
- ];
+ 
  const referenceLinks={
   "Java Full Stack Developer":"https://roadmap.sh/full-stack",
   "Backend Developer (Java)":"https://roadmap.sh/backend",
@@ -64,7 +56,7 @@ function Roadmap({resumes=[],preview=false,onMessage=()=>{}}){
   </section>
   <section className="panel roadmap-resources"><h3>Make this plan yours</h3><p>Work through each phase in order. Build the suggested projects, review your skills and update your resume as you progress.</p><div className="roadmap-chips"><span>Learn the concept</span><span>Practice hands-on</span><span>Build a project</span><span>Review and improve</span></div><p><a href={referenceLinks[targetRole]||"https://roadmap.sh/roadmaps/"} target="_blank" rel="noreferrer">Open a related learning reference ↗</a></p></section>
   <p className="roadmap-disclaimer">{roadmap.disclaimer||"This plan is AI-generated guidance based on the resume selected. Verify technical details and adjust the pace to your schedule."}</p></>}
-  {!roadmap&&<section className="roadmap-suggestions"><div><small className="eyebrow">CAREERPILOT ROADMAP LIBRARY</small><h2>Explore a career path</h2><p>Each path is designed by CareerPilot as a practical sequence of skills, practice and portfolio work. Select one to personalize it with your resume.</p></div><div className="roadmap-path-grid">{paths.map(p=><article className="roadmap-path-card" key={p.role}><span>{p.icon}</span><b>{p.role}</b><small>{p.description}</small><ul>{p.stages.slice(0,3).map((stage,i)=><li key={i}>{stage}</li>)}</ul><button className="soft" onClick={()=>{setTargetRole(p.role);setError("");window.scrollTo({top:0,behavior:"smooth"})}}>Choose this path <ArrowRight size={14}/></button><a className="roadmap-reference-link" href={referenceLinks[p.role]} target="_blank" rel="noreferrer">View roadmap.sh reference ↗</a></article>)}</div></section>}}
+  }}
  </div>
 }
 
