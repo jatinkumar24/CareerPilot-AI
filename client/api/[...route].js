@@ -30,6 +30,15 @@ const Resume = mongoose.models.Resume || mongoose.model("Resume", new mongoose.S
   skills: [String], experience: [mongoose.Schema.Types.Mixed],
   education: [mongoose.Schema.Types.Mixed], projects: [mongoose.Schema.Types.Mixed]
 }, { timestamps: true }));
+
+const JobApplication = mongoose.models.JobApplication || mongoose.model("JobApplication", new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, index: true },
+  jobUrl: { type: String, required: true }, sourceJobId: String, title: { type: String, required: true },
+  company: String, source: String, location: String, status: { type: String, enum: ["Saved","Applied","Interview","Rejected","Offer"], default: "Saved" },
+  notes: String, appliedAt: Date
+}, { timestamps: true, versionKey: false }));
+JobApplication.schema.index({ user: 1, jobUrl: 1 }, { unique: true });
+
 const router = express.Router();
 const secret = () => {
   if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) throw new Error("JWT_SECRET must contain at least 32 characters.");
@@ -82,6 +91,70 @@ router.delete("/resumes/:id", auth, wrap(async (req, res) => {
   const doc = await Resume.findOneAndDelete({ _id: req.params.id, user: req.user.id });
   if (!doc) return res.status(404).json({ message: "Resume not found." });
   res.json({ message: "Resume deleted." });
+}));
+
+
+router.get("/jobs/search", auth, wrap(async (req, res) => {
+  const q = String(req.query.q || "").trim().slice(0, 120);
+  const location = String(req.query.location || "").trim().slice(0, 100);
+  const [arbeitnow, remotive] = await Promise.allSettled([
+    fetch("https://www.arbeitnow.com/api/job-board-api?page=1", { signal: AbortSignal.timeout(9000) }).then(r => r.ok ? r.json() : Promise.reject(new Error("Arbeitnow feed unavailable"))),
+    fetch("https://remotive.com/api/remote-jobs" + (q ? "?search=" + encodeURIComponent(q) : ""), { signal: AbortSignal.timeout(9000) }).then(r => r.ok ? r.json() : Promise.reject(new Error("Remotive feed unavailable")))
+  ]);
+  const terms = q.toLowerCase().split(/\\s+/).filter(Boolean);
+  const place = location.toLowerCase();
+  const jobs = [];
+  if (arbeitnow.status === "fulfilled") {
+    for (const j of (arbeitnow.value.data || [])) {
+      const text = [j.title,j.company_name,j.location,...(j.tags||[])].join(" ").toLowerCase();
+      if (terms.length && !terms.every(t => text.includes(t))) continue;
+      if (place && place !== "india" && !text.includes(place) && !j.remote) continue;
+      jobs.push({ id: "arbeitnow-" + j.slug, title: j.title, company: j.company_name, location: j.location, remote: !!j.remote, type: (j.job_types||[]).join(", "), tags: j.tags||[], url: j.url, source: "Arbeitnow", date: j.created_at ? new Date(j.created_at).toISOString().slice(0,10) : "", description: String(j.description||"").replace(/<[^>]*>/g," ").replace(/\\s+/g," ").slice(0,240) });
+    }
+  }
+  if (remotive.status === "fulfilled") {
+    for (const j of (remotive.value.jobs || [])) {
+      const text = [j.title,j.company_name,j.candidate_required_location,...(j.tags||[])].join(" ").toLowerCase();
+      if (terms.length && !terms.every(t => text.includes(t))) continue;
+      if (place && place !== "india" && !text.includes(place) && !/worldwide|anywhere/i.test(j.candidate_required_location||"")) continue;
+      jobs.push({ id: "remotive-" + j.id, title: j.title, company: j.company_name, location: j.candidate_required_location, remote: true, type: j.job_type||"", tags: j.tags||[], url: j.url, source: "Remotive", date: j.publication_date ? j.publication_date.slice(0,10) : "", description: String(j.description||"").replace(/<[^>]*>/g," ").replace(/\\s+/g," ").slice(0,240) });
+    }
+  }
+  const unique = [...new Map(jobs.filter(j => j.url && /^https:\\/\\//i.test(j.url)).map(j => [j.url,j])).values()].slice(0, 60);
+  const warnings = [];
+  if (arbeitnow.status === "rejected") warnings.push("Arbeitnow feed is temporarily unavailable.");
+  if (remotive.status === "rejected") warnings.push("Remotive feed is temporarily unavailable.");
+  res.json({ jobs: unique, warnings, sources: ["Arbeitnow","Remotive"], queriedAt: new Date().toISOString() });
+}));
+router.get("/applications", auth, wrap(async (req, res) => {
+  await db();
+  res.json(await JobApplication.find({ user: req.user.id }).sort({ updatedAt: -1 }).lean());
+}));
+router.post("/applications", auth, wrap(async (req, res) => {
+  await db();
+  const { jobUrl, url, title, company, source, location, status } = req.body || {};
+  const targetUrl = jobUrl || url;
+  if (!title?.trim() || !targetUrl || !/^https:\\/\\//i.test(targetUrl)) return res.status(400).json({ message: "A job title and valid HTTPS job link are required." });
+  const safeStatus = ["Saved","Applied","Interview","Rejected","Offer"].includes(status) ? status : "Saved";
+  const doc = await JobApplication.findOneAndUpdate({ user: req.user.id, jobUrl: targetUrl },
+    { $set: { title: String(title).slice(0,200), company: String(company||"").slice(0,200), source: String(source||"Other").slice(0,60), location: String(location||"").slice(0,160), status: safeStatus, ...(safeStatus==="Applied" ? { appliedAt: new Date() } : {}) } },
+    { new: true, upsert: true, runValidators: true, setDefaultsOnInsert: true });
+  res.status(200).json(doc);
+}));
+router.patch("/applications/:id", auth, wrap(async (req, res) => {
+  await db();
+  const status = req.body?.status;
+  if (!["Saved","Applied","Interview","Rejected","Offer"].includes(status)) return res.status(400).json({ message: "Choose a valid application status." });
+  const doc = await JobApplication.findOneAndUpdate({ _id: req.params.id, user: req.user.id },
+    { $set: { status, ...(status==="Applied" ? { appliedAt: new Date() } : {}) } }, { new: true });
+  if (!doc) return res.status(404).json({ message: "Application not found." });
+  res.json(doc);
+}));
+router.delete("/applications/:id", auth, wrap(async (req, res) => {
+  await db();
+  const doc = await JobApplication.findOneAndDelete({ _id: req.params.id, user: req.user.id });
+  if (!doc) return res.status(404).json({ message: "Application not found." });
+  res.json({ message: "Application removed." });
 }));
 
 const roles = {
