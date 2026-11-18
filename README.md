@@ -32,6 +32,16 @@ Requirements: Node.js 20+ and MongoDB (local or Atlas).
    ```
 5. Open http://localhost:5173.
 
+## Deploying the full application to Vercel
+
+The React frontend and serverless API are both deployed from the `client` directory. Before authentication, resume cloud storage and analysis can work in production, configure these Environment Variables in the Vercel project (Production and Preview as needed):
+
+- `MONGODB_URI`: a MongoDB Atlas connection string. Create a database user and allow Vercel deployments to connect in Atlas Network Access.
+- `JWT_SECRET`: a long, random secret (at least 32 characters). Do not commit it to GitHub.
+- `CLIENT_URL`: the deployed website origin, for example `https://career-pilot-ai-opal-chi.vercel.app`.
+
+Then redeploy the project. Check `/api/health`; it should return a connected database status. The frontend uses the same-origin `/api` endpoint by default.
+
 ## Important
 The current resume score is a transparent completeness checklist, not a certified ATS score. Skill matching uses starter role checklists and is not a hiring prediction. The app is ready for a later Gemini API integration; no secret API key is exposed in the browser.
 
