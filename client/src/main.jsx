@@ -30,8 +30,17 @@ function Roadmap({resumes=[],preview=false,onMessage=()=>{}}){
   {role:"Frontend Developer",description:"Create accessible, responsive and polished interfaces with modern JavaScript and React.",stages:["HTML, CSS and responsive layouts","JavaScript and browser fundamentals","React, routing and state management","TypeScript, accessibility and testing","Performance, deployment and portfolio"],icon:"◉"},
   {role:"Data Analyst",description:"Turn raw data into clear insights using SQL, Python, spreadsheets and visualization.",stages:["Spreadsheets and analytical thinking","SQL querying and data cleaning","Python, pandas and exploratory analysis","Power BI or Tableau dashboards","Business case studies and portfolio"],icon:"▥"}
  ];
+ const referenceLinks={
+  "Java Full Stack Developer":"https://roadmap.sh/full-stack",
+  "Backend Developer (Java)":"https://roadmap.sh/backend",
+  "AI Engineer":"https://roadmap.sh/ai-engineer",
+  "Cyber Security":"https://roadmap.sh/cyber-security",
+  "MERN Stack Developer":"https://roadmap.sh/full-stack",
+  "Frontend Developer":"https://roadmap.sh/frontend",
+  "Data Analyst":"https://roadmap.sh/ai-data-scientist"
+ };
  return <div className="roadmap-page">
-  <div className="pagehead"><div><small className="eyebrow">YOUR PERSONAL LEARNING PATH</small><h1>Career Roadmap</h1><p>Original CareerPilot learning paths, tailored to your skills, goals and progress.</p></div></div>
+  <div className="pagehead"><div><small className="eyebrow">YOUR PERSONAL LEARNING PATH</small><h1>Career Roadmap</h1><p>Personalized learning plans built around your skills, with optional reference guides for deeper study.</p></div><a className="roadmap-reference" href="https://roadmap.sh/roadmaps/" target="_blank" rel="noreferrer">Explore roadmap.sh ↗</a></div>
   <section className="panel roadmap-builder">
    <div><h3><BrainCircuit size={19}/> Build my personalized roadmap</h3><p>Choose one of your saved resumes and a target role. AI will identify strengths, missing skills, learning order and portfolio projects.</p></div>
    <div className="roadmap-controls">
@@ -53,9 +62,9 @@ function Roadmap({resumes=[],preview=false,onMessage=()=>{}}){
   <section className="roadmap-timeline"><div className="roadmap-section-title"><div><small className="eyebrow">STEP-BY-STEP LEARNING PLAN</small><h2>Your learning journey</h2></div><span>{roadmap.phases?.length||0} phases</span></div>
    {(roadmap.phases||[]).map((phase,i)=><article className="roadmap-phase" key={i}><div className="roadmap-step">{String(i+1).padStart(2,"0")}</div><div className="roadmap-phase-content"><div className="roadmap-phase-heading"><div><h3>{phase.title}</h3><p>{phase.objective}</p></div><span>{phase.duration}</span></div><h4>Topics to learn</h4><ul>{(phase.topics||[]).map((x,j)=><li key={j}>{x}</li>)}</ul><h4>Practical tasks</h4><ul>{(phase.tasks||[]).map((x,j)=><li key={j}>{x}</li>)}</ul>{phase.project&&<div className="roadmap-project"><b>Build:</b> {phase.project}</div>}</div></article>)}
   </section>
-  <section className="panel roadmap-resources"><h3>Make this plan yours</h3><p>Work through each phase in order. Build the suggested projects, review your skills and update your resume as you progress.</p><div className="roadmap-chips"><span>Learn the concept</span><span>Practice hands-on</span><span>Build a project</span><span>Review and improve</span></div></section>
+  <section className="panel roadmap-resources"><h3>Make this plan yours</h3><p>Work through each phase in order. Build the suggested projects, review your skills and update your resume as you progress.</p><div className="roadmap-chips"><span>Learn the concept</span><span>Practice hands-on</span><span>Build a project</span><span>Review and improve</span></div><p><a href={referenceLinks[targetRole]||"https://roadmap.sh/roadmaps/"} target="_blank" rel="noreferrer">Open a related learning reference ↗</a></p></section>
   <p className="roadmap-disclaimer">{roadmap.disclaimer||"This plan is AI-generated guidance based on the resume selected. Verify technical details and adjust the pace to your schedule."}</p></>}
-  {!roadmap&&<section className="roadmap-suggestions"><div><small className="eyebrow">CAREERPILOT ROADMAP LIBRARY</small><h2>Explore a career path</h2><p>Each path is designed by CareerPilot as a practical sequence of skills, practice and portfolio work. Select one to personalize it with your resume.</p></div><div className="roadmap-path-grid">{paths.map(p=><article className="roadmap-path-card" key={p.role}><span>{p.icon}</span><b>{p.role}</b><small>{p.description}</small><ul>{p.stages.slice(0,3).map((stage,i)=><li key={i}>{stage}</li>)}</ul><button className="soft" onClick={()=>{setTargetRole(p.role);setError("");window.scrollTo({top:0,behavior:"smooth"})}}>Choose this path <ArrowRight size={14}/></button></article>)}</div></section>}}
+  {!roadmap&&<section className="roadmap-suggestions"><div><small className="eyebrow">CAREERPILOT ROADMAP LIBRARY</small><h2>Explore a career path</h2><p>Each path is designed by CareerPilot as a practical sequence of skills, practice and portfolio work. Select one to personalize it with your resume.</p></div><div className="roadmap-path-grid">{paths.map(p=><article className="roadmap-path-card" key={p.role}><span>{p.icon}</span><b>{p.role}</b><small>{p.description}</small><ul>{p.stages.slice(0,3).map((stage,i)=><li key={i}>{stage}</li>)}</ul><button className="soft" onClick={()=>{setTargetRole(p.role);setError("");window.scrollTo({top:0,behavior:"smooth"})}}>Choose this path <ArrowRight size={14}/></button><a className="roadmap-reference-link" href={referenceLinks[p.role]} target="_blank" rel="noreferrer">View roadmap.sh reference ↗</a></article>)}</div></section>}}
  </div>
 }
 
