@@ -43,6 +43,28 @@ function Roadmap({resumes=[],preview=false,onMessage=()=>{}}){
    {error&&<p className="roadmap-error">{error}</p>}
    {!resumes.length&&<p className="roadmap-hint">No saved resume found yet. Open AI Resume Builder, complete your details and save it first.</p>}
   </section>
+  <section className="roadmap-suggestions">
+   <div><small className="eyebrow">EXPLORE LEARNING PATHS</small><h2>Roadmaps from roadmap.sh</h2><p>Browse role-based and skill-based guides. Use them as references alongside your personalized CareerPilot plan.</p></div>
+   <div className="roadmap-path-grid">
+    <a href="https://roadmap.sh/java" target="_blank" rel="noreferrer"><span>☕</span><b>Java Developer</b><small>Core Java, OOP, collections and language fundamentals</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/spring-boot" target="_blank" rel="noreferrer"><span>🍃</span><b>Spring Boot</b><small>Java backend, REST APIs, persistence and security</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/backend" target="_blank" rel="noreferrer"><span>⚙️</span><b>Backend Developer</b><small>Server-side development, APIs, databases and architecture</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/frontend" target="_blank" rel="noreferrer"><span>🎨</span><b>Frontend Developer</b><small>Web fundamentals, UI development and browser skills</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/full-stack" target="_blank" rel="noreferrer"><span>🧩</span><b>Full Stack Developer</b><small>Frontend, backend, databases and deployment</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/ai-engineer" target="_blank" rel="noreferrer"><span>🤖</span><b>AI Engineer</b><small>Build AI-powered applications and integrate modern AI systems</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/ai-data-scientist" target="_blank" rel="noreferrer"><span>🧠</span><b>AI & Data Scientist</b><small>Data, machine learning and applied AI foundations</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/cyber-security" target="_blank" rel="noreferrer"><span>🛡️</span><b>Cyber Security</b><small>Security fundamentals, networks and defensive practices</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/devops" target="_blank" rel="noreferrer"><span>☁️</span><b>DevOps Engineer</b><small>Linux, automation, CI/CD and cloud infrastructure</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/data-analyst" target="_blank" rel="noreferrer"><span>📊</span><b>Data Analyst</b><small>SQL, Python, analysis and data visualization</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/system-design" target="_blank" rel="noreferrer"><span>🏗️</span><b>System Design</b><small>Scalable systems, architecture and distributed concepts</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/datastructures-and-algorithms" target="_blank" rel="noreferrer"><span>🧮</span><b>Data Structures & Algorithms</b><small>Problem solving, core data structures and algorithms</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/python" target="_blank" rel="noreferrer"><span>🐍</span><b>Python</b><small>Python programming and practical language skills</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/sql" target="_blank" rel="noreferrer"><span>🗄️</span><b>SQL</b><small>Queries, relational databases and data management</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/react" target="_blank" rel="noreferrer"><span>⚛️</span><b>React</b><small>Components, state, hooks and modern frontend apps</small><em>Explore roadmap ↗</em></a>
+    <a href="https://roadmap.sh/nodejs" target="_blank" rel="noreferrer"><span>🟢</span><b>Node.js</b><small>JavaScript backend development and server-side APIs</small><em>Explore roadmap ↗</em></a>
+   </div>
+   <p className="roadmap-disclaimer">Roadmap links open the official roadmap.sh website in a new tab. Availability and content are maintained by roadmap.sh.</p>
+  </section>
   {roadmap&&<><section className="roadmap-overview">
    <div className="roadmap-summary"><small className="eyebrow">YOUR RECOMMENDED PATH</small><h2>{roadmap.title}</h2><p>{roadmap.summary}</p><div className="roadmap-meta"><span>{roadmap.duration||"Suggested learning plan"}</span><span>{roadmap.level||"Beginner to job-ready"}</span></div></div>
    <div className="roadmap-score"><small>RESUME READINESS</small><strong>{roadmap.readinessScore??"—"}<small>/100</small></strong><span>Indicative estimate, not a hiring prediction</span></div>
