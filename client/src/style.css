@@ -118,3 +118,27 @@
 @media(max-width:900px){.job-search-fields{grid-template-columns:1fr 1fr}.job-search-button{grid-column:1/-1}}
 
 .sample-upload{margin:20px 0;padding:18px;border:1px solid #7867df66;border-radius:14px;background:linear-gradient(135deg,#8b72ff12,#5c5ce80a)}.sample-upload-head{display:flex;gap:12px;align-items:flex-start;color:#b9aaff}.sample-upload-head h4{margin:0 0 5px;color:#fff}.sample-upload-head p{margin:0 0 12px;color:#aab2c6;font-size:12px;line-height:1.5}.sample-file-label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:700;color:#d8d9e7}.sample-file-label input{width:100%;padding:10px;border:1px dashed #8273d5;border-radius:8px;background:#0b1020;color:#cbd0e0}.sample-file-name,.sample-privacy{display:block;margin-top:8px;color:#9ca6bb;font-size:11px;line-height:1.5}.sample-mode{display:grid;gap:8px;margin:14px 0}.sample-mode label{display:flex;align-items:center;gap:8px;color:#c8cde0;font-size:12px}.sample-mode input{accent-color:#927aff}.sample-upload button:disabled{opacity:.45;cursor:not-allowed}
+
+
+/* Resume-based job hunt */
+.resume-job-match{margin-bottom:15px;border:1px solid #dcd6ff;background:linear-gradient(135deg,#faf9ff,#fff)}
+.resume-job-match-heading{display:flex;gap:12px;align-items:flex-start;margin-bottom:16px}
+.resume-job-match-icon{width:40px;height:40px;flex:none;border-radius:10px;background:#efedff;color:#7865dc;display:grid;place-items:center}
+.resume-job-match-heading h3{font:700 14px Manrope;margin:1px 0 5px;color:#293249}
+.resume-job-match-heading p{font-size:10px;color:#858da0;line-height:1.6;margin:0}
+.resume-job-match-controls{display:grid;grid-template-columns:1.4fr 1fr auto;gap:12px;align-items:end}
+.resume-job-match-controls label{display:grid;gap:7px;font-size:10px;font-weight:700;color:#596176}
+.resume-job-match-controls input{width:100%;border:1px solid #e0e3eb;border-radius:8px;padding:11px;background:#fff;color:#293249;font-size:11px}
+.resume-job-match-controls button{min-height:39px;display:flex;align-items:center;justify-content:center;gap:7px}
+.resume-job-file-name,.resume-job-privacy{display:block;margin-top:9px;font-size:9px;color:#8992a3}
+.resume-profile-result{display:grid;gap:12px;margin-bottom:15px}
+.resume-profile-result h3{margin:6px 0;font-size:14px;color:#293249}
+.resume-profile-result p{font-size:10px;color:#838b9b;margin:0}
+.resume-profile-tags{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.resume-profile-tags b{width:100%;font-size:10px;color:#596176}
+.resume-profile-tags span{font-size:9px;padding:6px 9px;border-radius:6px;background:#f1efff;color:#6e5bc9}
+.resume-profile-result>small{font-size:9px;color:#8992a3}
+.job-card-match{display:inline-flex;align-items:center;border-radius:6px;background:#eaf8f2;color:#328568;font-size:9px;font-weight:800;padding:6px 8px}
+.job-card-match-detail{font-size:9px;color:#6d8b7d;margin:0 0 10px}
+@media(max-width:900px){.resume-job-match-controls{grid-template-columns:1fr 1fr}.resume-job-match-controls button{grid-column:1/-1}}
+@media(max-width:620px){.resume-job-match-controls{grid-template-columns:1fr}.resume-job-match-controls button{grid-column:auto}}
