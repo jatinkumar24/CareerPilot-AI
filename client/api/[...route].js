@@ -26,7 +26,7 @@ const User = mongoose.models.User || mongoose.model("User", new mongoose.Schema(
 }, { timestamps: true }));
 const Resume = mongoose.models.Resume || mongoose.model("Resume", new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, index: true },
-  title: String, personal: mongoose.Schema.Types.Mixed,
+  title: String, template: { type: String, default: "modern" }, personal: mongoose.Schema.Types.Mixed,
   skills: [String], experience: [mongoose.Schema.Types.Mixed],
   education: [mongoose.Schema.Types.Mixed], projects: [mongoose.Schema.Types.Mixed]
 }, { timestamps: true }));
