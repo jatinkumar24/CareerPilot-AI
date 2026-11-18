@@ -6,10 +6,9 @@
 .preview-banner{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:13px 16px;margin-bottom:20px;border:1px solid #ded8ff;background:#f2efff;border-radius:10px;color:#5d50a8;font-size:11px}
 .preview-banner span{flex:1;color:#716b8c}
 .preview-banner button{border:0;border-radius:7px;background:#7865dc;color:white;padding:9px 12px;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700}
-.preview-mode .content input,.preview-mode .content textarea,.preview-mode .content select{pointer-events:none;background:#f7f8fb;color:#8b93a4}
-.preview-mode .content button{pointer-events:none;opacity:.5}
-.preview-mode .content .preview-banner button{pointer-events:auto;opacity:1}
-.preview-mode .content .pagehead button,.preview-mode .content .empty button{opacity:.45}
+.preview-mode .content input,.preview-mode .content textarea,.preview-mode .content select{background:#fff;color:#293249}
+.preview-mode .content button{pointer-events:auto}
+.preview-mode .content .pagehead button:disabled,.preview-mode .content button:disabled{opacity:.5;cursor:not-allowed}
 @media(max-width:620px){.skip-preview{right:22px;top:24px}.back{left:22px;top:24px}.auth main{padding-top:85px}}
 
 
@@ -43,3 +42,5 @@
 .job-empty h3{color:#293249}.job-empty p{font-size:10px;color:#8992a3}
 @media(max-width:900px){.job-search-fields{grid-template-columns:1fr 1fr}.job-list{grid-template-columns:1fr}}
 @media(max-width:620px){.job-search-fields{grid-template-columns:1fr}.job-card-bottom{align-items:flex-start;flex-direction:column}.job-count{align-self:flex-start}}
+
+.job-apply{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:7px;background:#7865dc;color:#fff;padding:9px 12px;font-size:10px;font-weight:700;text-decoration:none}.job-apply:hover{background:#6250c8}
