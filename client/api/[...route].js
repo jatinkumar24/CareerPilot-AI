@@ -108,7 +108,7 @@ router.get("/jobs/search", auth, wrap(async (req, res) => {
     for (const j of (arbeitnow.value.data || [])) {
       const text = [j.title,j.company_name,j.location,...(j.tags||[])].join(" ").toLowerCase();
       if (terms.length && !terms.every(t => text.includes(t))) continue;
-      if (place && place !== "india" && !text.includes(place) && !j.remote) continue;
+      if (place && !text.includes(place) && !(j.remote && /worldwide|anywhere|global/i.test(j.location||""))) continue;
       jobs.push({ id: "arbeitnow-" + j.slug, title: j.title, company: j.company_name, location: j.location, remote: !!j.remote, type: (j.job_types||[]).join(", "), tags: j.tags||[], url: j.url, source: "Arbeitnow", date: j.created_at ? new Date(j.created_at).toISOString().slice(0,10) : "", description: String(j.description||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240) });
     }
   }
@@ -116,7 +116,7 @@ router.get("/jobs/search", auth, wrap(async (req, res) => {
     for (const j of (remotive.value.jobs || [])) {
       const text = [j.title,j.company_name,j.candidate_required_location,...(j.tags||[])].join(" ").toLowerCase();
       if (terms.length && !terms.every(t => text.includes(t))) continue;
-      if (place && place !== "india" && !text.includes(place) && !/worldwide|anywhere/i.test(j.candidate_required_location||"")) continue;
+      if (place && !text.includes(place) && !/worldwide|anywhere|global/i.test(j.candidate_required_location||"")) continue;
       jobs.push({ id: "remotive-" + j.id, title: j.title, company: j.company_name, location: j.candidate_required_location, remote: true, type: j.job_type||"", tags: j.tags||[], url: j.url, source: "Remotive", date: j.publication_date ? j.publication_date.slice(0,10) : "", description: String(j.description||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240) });
     }
   }
