@@ -101,7 +101,7 @@ router.get("/jobs/search", auth, wrap(async (req, res) => {
     fetch("https://www.arbeitnow.com/api/job-board-api?page=1", { signal: AbortSignal.timeout(9000) }).then(r => r.ok ? r.json() : Promise.reject(new Error("Arbeitnow feed unavailable"))),
     fetch("https://remotive.com/api/remote-jobs" + (q ? "?search=" + encodeURIComponent(q) : ""), { signal: AbortSignal.timeout(9000) }).then(r => r.ok ? r.json() : Promise.reject(new Error("Remotive feed unavailable")))
   ]);
-  const terms = q.toLowerCase().split(/\\s+/).filter(Boolean);
+  const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
   const place = location.toLowerCase();
   const jobs = [];
   if (arbeitnow.status === "fulfilled") {
@@ -109,7 +109,7 @@ router.get("/jobs/search", auth, wrap(async (req, res) => {
       const text = [j.title,j.company_name,j.location,...(j.tags||[])].join(" ").toLowerCase();
       if (terms.length && !terms.every(t => text.includes(t))) continue;
       if (place && place !== "india" && !text.includes(place) && !j.remote) continue;
-      jobs.push({ id: "arbeitnow-" + j.slug, title: j.title, company: j.company_name, location: j.location, remote: !!j.remote, type: (j.job_types||[]).join(", "), tags: j.tags||[], url: j.url, source: "Arbeitnow", date: j.created_at ? new Date(j.created_at).toISOString().slice(0,10) : "", description: String(j.description||"").replace(/<[^>]*>/g," ").replace(/\\s+/g," ").slice(0,240) });
+      jobs.push({ id: "arbeitnow-" + j.slug, title: j.title, company: j.company_name, location: j.location, remote: !!j.remote, type: (j.job_types||[]).join(", "), tags: j.tags||[], url: j.url, source: "Arbeitnow", date: j.created_at ? new Date(j.created_at).toISOString().slice(0,10) : "", description: String(j.description||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240) });
     }
   }
   if (remotive.status === "fulfilled") {
@@ -117,10 +117,10 @@ router.get("/jobs/search", auth, wrap(async (req, res) => {
       const text = [j.title,j.company_name,j.candidate_required_location,...(j.tags||[])].join(" ").toLowerCase();
       if (terms.length && !terms.every(t => text.includes(t))) continue;
       if (place && place !== "india" && !text.includes(place) && !/worldwide|anywhere/i.test(j.candidate_required_location||"")) continue;
-      jobs.push({ id: "remotive-" + j.id, title: j.title, company: j.company_name, location: j.candidate_required_location, remote: true, type: j.job_type||"", tags: j.tags||[], url: j.url, source: "Remotive", date: j.publication_date ? j.publication_date.slice(0,10) : "", description: String(j.description||"").replace(/<[^>]*>/g," ").replace(/\\s+/g," ").slice(0,240) });
+      jobs.push({ id: "remotive-" + j.id, title: j.title, company: j.company_name, location: j.candidate_required_location, remote: true, type: j.job_type||"", tags: j.tags||[], url: j.url, source: "Remotive", date: j.publication_date ? j.publication_date.slice(0,10) : "", description: String(j.description||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240) });
     }
   }
-  const unique = [...new Map(jobs.filter(j => j.url && /^https:\\/\\//i.test(j.url)).map(j => [j.url,j])).values()].slice(0, 60);
+  const unique = [...new Map(jobs.filter(j => j.url && /^https:\/\//i.test(j.url)).map(j => [j.url,j])).values()].slice(0, 60);
   const warnings = [];
   if (arbeitnow.status === "rejected") warnings.push("Arbeitnow feed is temporarily unavailable.");
   if (remotive.status === "rejected") warnings.push("Remotive feed is temporarily unavailable.");
@@ -134,7 +134,7 @@ router.post("/applications", auth, wrap(async (req, res) => {
   await db();
   const { jobUrl, url, title, company, source, location, status } = req.body || {};
   const targetUrl = jobUrl || url;
-  if (!title?.trim() || !targetUrl || !/^https:\\/\\//i.test(targetUrl)) return res.status(400).json({ message: "A job title and valid HTTPS job link are required." });
+  if (!title?.trim() || !targetUrl || !/^https:\/\//i.test(targetUrl)) return res.status(400).json({ message: "A job title and valid HTTPS job link are required." });
   const safeStatus = ["Saved","Applied","Interview","Rejected","Offer"].includes(status) ? status : "Saved";
   const doc = await JobApplication.findOneAndUpdate({ user: req.user.id, jobUrl: targetUrl },
     { $set: { title: String(title).slice(0,200), company: String(company||"").slice(0,200), source: String(source||"Other").slice(0,60), location: String(location||"").slice(0,160), status: safeStatus, ...(safeStatus==="Applied" ? { appliedAt: new Date() } : {}) } },
