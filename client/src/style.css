@@ -113,3 +113,6 @@
 .spin{animation:jobspin 1s linear infinite}
 @keyframes jobspin{to{transform:rotate(360deg)}}
 @media(max-width:620px){.job-search-fields{grid-template-columns:1fr}.job-search-button{width:100%}.tracker-item{align-items:flex-start;flex-wrap:wrap}.tracker-item select{margin-left:auto}.job-results-head,.tracker-heading{align-items:flex-start;flex-direction:column}.job-actions{width:100%}}
+
+.job-search-fields{grid-template-columns:1.5fr 1fr auto}
+@media(max-width:900px){.job-search-fields{grid-template-columns:1fr 1fr}.job-search-button{grid-column:1/-1}}
