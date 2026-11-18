@@ -83,3 +83,33 @@
   .previewcol>.panel{padding:0!important;border:0!important;box-shadow:none!important}
   .paper{display:block!important;border:0!important;box-shadow:none!important;margin:0!important;min-height:0!important;padding:22px!important}
 }
+
+/* CareerPilot Job Hub */
+.job-search-button{align-self:end;min-height:39px;display:flex;align-items:center;justify-content:center;gap:7px}
+.job-source-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.job-source-links a,.tracker-main a{display:inline-flex;align-items:center;gap:5px;color:#6d5bd0;font-size:10px;font-weight:700;text-decoration:none;border:1px solid #e9e5fb;border-radius:7px;padding:7px 9px;background:#faf9ff}
+.job-source-links a:hover,.tracker-main a:hover{background:#f0edff}
+.job-results-head,.tracker-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 12px;color:#293249;font-size:12px}
+.job-source-filter{display:flex;align-items:center;gap:8px;font-size:10px;color:#7b8496}
+.job-source-filter select,.tracker-item select{border:1px solid #e2e3eb;border-radius:7px;padding:7px 9px;background:#fff;color:#333b50;font-size:10px}
+.job-source-badge{font-size:9px;font-weight:700;color:#6d5bd0;background:#f1efff;border-radius:6px;padding:6px 8px;white-space:nowrap}
+.job-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.mark-applied{border:1px solid #d9eee4;background:#f1faf5;color:#2e8060;border-radius:7px;padding:8px 10px;font-size:9px;font-weight:700;cursor:pointer}
+.tracked-label{display:inline-flex;align-items:center;gap:4px;color:#348567;font-size:10px;font-weight:700}
+.job-hub-footnote{display:flex;align-items:flex-start;gap:7px;color:#8c93a2;font-size:9px;line-height:1.6;margin:16px 2px}
+.job-hub-footnote svg{flex:none;margin-top:1px}
+.job-error{color:#9b5b31}
+.application-tracker{padding:18px}
+.tracker-heading{margin:0 0 16px}
+.tracker-heading h3{margin:0 0 5px;font-size:14px}
+.tracker-heading p{margin:0;color:#8a91a1;font-size:10px}
+.tracker-list{display:grid;gap:9px}
+.tracker-item{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #edf0f4;border-radius:9px;background:#fff}
+.tracker-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.tracker-main b{font-size:11px;color:#293249}
+.tracker-main span{font-size:9px;color:#838b9b}
+.tracker-main a{align-self:flex-start;padding:5px 7px}
+.tracker-delete{border:0;background:#fff5f5;color:#b76d6d;border-radius:7px;padding:8px;cursor:pointer}
+.spin{animation:jobspin 1s linear infinite}
+@keyframes jobspin{to{transform:rotate(360deg)}}
+@media(max-width:620px){.job-search-fields{grid-template-columns:1fr}.job-search-button{width:100%}.tracker-item{align-items:flex-start;flex-wrap:wrap}.tracker-item select{margin-left:auto}.job-results-head,.tracker-heading{align-items:flex-start;flex-direction:column}.job-actions{width:100%}}
