@@ -197,34 +197,49 @@ router.post("/jobs/recommendations", auth, wrap(async (req, res) => {
 router.get("/jobs/search", auth, wrap(async (req, res) => {
   const q = String(req.query.q || "").trim().slice(0, 120);
   const location = String(req.query.location || "").trim().slice(0, 100);
-  const [arbeitnow, remotive] = await Promise.allSettled([
-    fetch("https://www.arbeitnow.com/api/job-board-api?page=1", { signal: AbortSignal.timeout(9000) }).then(r => r.ok ? r.json() : Promise.reject(new Error("Arbeitnow feed unavailable"))),
-    fetch("https://remotive.com/api/remote-jobs" + (q ? "?search=" + encodeURIComponent(q) : ""), { signal: AbortSignal.timeout(9000) }).then(r => r.ok ? r.json() : Promise.reject(new Error("Remotive feed unavailable")))
-  ]);
-  const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
   const place = location.toLowerCase();
+  const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const [arbeitnow, remotive, jobicy, himalayas] = await Promise.allSettled([
+    fetch("https://www.arbeitnow.com/api/job-board-api?page=1", { signal: AbortSignal.timeout(10000) }).then(r => r.ok ? r.json() : Promise.reject(new Error("Arbeitnow unavailable"))),
+    fetch("https://remotive.com/api/remote-jobs" + (q ? "?search=" + encodeURIComponent(q) : ""), { signal: AbortSignal.timeout(10000) }).then(r => r.ok ? r.json() : Promise.reject(new Error("Remotive unavailable"))),
+    fetch("https://jobicy.com/api/jobs?count=100" + (q.length >= 3 ? "&tag=" + encodeURIComponent(q.slice(0,50)) : ""), { headers:{Accept:"application/json"}, signal:AbortSignal.timeout(10000) }).then(r => r.ok ? r.json() : Promise.reject(new Error("Jobicy unavailable"))),
+    fetch("https://himalayas.app/jobs/api/search?sort=recent&page=1" + (q ? "&q=" + encodeURIComponent(q) : "") + (place === "india" ? "&country=IN" : ""), { headers:{Accept:"application/json"}, signal:AbortSignal.timeout(10000) }).then(r => r.ok ? r.json() : Promise.reject(new Error("Himalayas unavailable")))
+  ]);
   const jobs = [];
-  if (arbeitnow.status === "fulfilled") {
-    for (const j of (arbeitnow.value.data || [])) {
-      const text = [j.title,j.company_name,j.location,...(j.tags||[])].join(" ").toLowerCase();
-      if (terms.length && !terms.every(t => text.includes(t))) continue;
-      if (place && !text.includes(place) && !(j.remote && /worldwide|anywhere|global/i.test(j.location||""))) continue;
-      jobs.push({ id: "arbeitnow-" + j.slug, title: j.title, company: j.company_name, location: j.location, remote: !!j.remote, type: (j.job_types||[]).join(", "), tags: j.tags||[], url: j.url, source: "Arbeitnow", date: j.created_at ? new Date(j.created_at).toISOString().slice(0,10) : "", description: String(j.description||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240) });
-    }
+  if (arbeitnow.status === "fulfilled") for (const j of (arbeitnow.value.data || [])) {
+    const hay=[j.title,j.company_name,j.location,...(j.tags||[])].join(" ").toLowerCase();
+    if (terms.length && !terms.every(t=>hay.includes(t))) continue;
+    if (place && !hay.includes(place) && !(j.remote && /worldwide|anywhere|global/i.test(j.location||""))) continue;
+    jobs.push({id:"arbeitnow-"+j.slug,title:j.title,company:j.company_name,location:j.location,remote:!!j.remote,type:(j.job_types||[]).join(", "),tags:j.tags||[],url:j.url,source:"Arbeitnow",date:j.created_at?new Date(j.created_at).toISOString().slice(0,10):"",description:String(j.description||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240)});
   }
-  if (remotive.status === "fulfilled") {
-    for (const j of (remotive.value.jobs || [])) {
-      const text = [j.title,j.company_name,j.candidate_required_location,...(j.tags||[])].join(" ").toLowerCase();
-      if (terms.length && !terms.every(t => text.includes(t))) continue;
-      if (place && !text.includes(place) && !/worldwide|anywhere|global/i.test(j.candidate_required_location||"")) continue;
-      jobs.push({ id: "remotive-" + j.id, title: j.title, company: j.company_name, location: j.candidate_required_location, remote: true, type: j.job_type||"", tags: j.tags||[], url: j.url, source: "Remotive", date: j.publication_date ? j.publication_date.slice(0,10) : "", description: String(j.description||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240) });
-    }
+  if (remotive.status === "fulfilled") for (const j of (remotive.value.jobs || [])) {
+    const hay=[j.title,j.company_name,j.candidate_required_location,...(j.tags||[])].join(" ").toLowerCase();
+    if (terms.length && !terms.every(t=>hay.includes(t))) continue;
+    if (place && !hay.includes(place) && !/worldwide|anywhere|global/i.test(j.candidate_required_location||"")) continue;
+    jobs.push({id:"remotive-"+j.id,title:j.title,company:j.company_name,location:j.candidate_required_location,remote:true,type:j.job_type||"",tags:j.tags||[],url:j.url,source:"Remotive",date:j.publication_date?j.publication_date.slice(0,10):"",description:String(j.description||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240)});
   }
-  const unique = [...new Map(jobs.filter(j => j.url && /^https:\/\//i.test(j.url)).map(j => [j.url,j])).values()].slice(0, 60);
-  const warnings = [];
-  if (arbeitnow.status === "rejected") warnings.push("Arbeitnow feed is temporarily unavailable.");
-  if (remotive.status === "rejected") warnings.push("Remotive feed is temporarily unavailable.");
-  res.json({ jobs: unique, warnings, sources: ["Arbeitnow","Remotive"], queriedAt: new Date().toISOString() });
+  if (jobicy.status === "fulfilled") for (const j of (jobicy.value.jobs || [])) {
+    const hay=[j.jobTitle,j.companyName,j.jobGeo,...(j.jobIndustry||[]),...(j.jobType||[])].join(" ").toLowerCase();
+    if (terms.length && !terms.every(t=>hay.includes(t))) continue;
+    const loc=String(j.jobGeo||"").toLowerCase();
+    if (place && !loc.includes(place) && !/anywhere|worldwide|global/i.test(loc) && place!=="india") continue;
+    jobs.push({id:"jobicy-"+j.id,title:j.jobTitle,company:j.companyName,location:j.jobGeo,remote:true,type:(j.jobType||[]).join(", "),tags:[...(j.jobIndustry||[]),j.jobLevel].filter(Boolean),url:j.url,source:"Jobicy",date:j.pubDate?String(j.pubDate).slice(0,10):"",description:String(j.jobExcerpt||j.jobDescription||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240)});
+  }
+  if (himalayas.status === "fulfilled") for (const j of (himalayas.value.jobs || [])) {
+    const hay=[j.title,j.companyName,j.excerpt,...(j.categories||[]),...(j.parentCategories||[])].join(" ").toLowerCase();
+    if (terms.length && !terms.every(t=>hay.includes(t))) continue;
+    const allowed=Array.isArray(j.locationRestrictions)?j.locationRestrictions.map(x=>String(x).toLowerCase()):[];
+    if (place && allowed.length && !allowed.some(x=>x==="india"||x==="in"||x.includes(place))) continue;
+    const salary=j.minSalary&&j.maxSalary?(j.currency||"")+" "+j.minSalary+"-"+j.maxSalary+" "+(j.salaryPeriod||"annual"):"";
+    jobs.push({id:"himalayas-"+j.guid,title:j.title,company:j.companyName,location:allowed.length?allowed.join(", "):"Remote · Worldwide",remote:true,type:j.employmentType||"",tags:[...(j.categories||[]),...(j.parentCategories||[])],url:j.applicationLink,source:"Himalayas",sourceUrl:"https://himalayas.app",date:j.pubDate?new Date(j.pubDate*1000).toISOString().slice(0,10):"",description:String(j.excerpt||j.description||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").slice(0,240),salary});
+  }
+  const unique=[...new Map(jobs.filter(j=>j.url&&/^https:\/\//i.test(j.url)).map(j=>[j.url,j])).values()].slice(0,100);
+  const warnings=[];
+  if(arbeitnow.status==="rejected")warnings.push("Arbeitnow feed is temporarily unavailable.");
+  if(remotive.status==="rejected")warnings.push("Remotive feed is temporarily unavailable.");
+  if(jobicy.status==="rejected")warnings.push("Jobicy feed is temporarily unavailable.");
+  if(himalayas.status==="rejected")warnings.push("Himalayas feed is temporarily unavailable.");
+  res.json({jobs:unique,warnings,sources:["Arbeitnow","Remotive","Jobicy","Himalayas"],queriedAt:new Date().toISOString()});
 }));
 router.get("/applications", auth, wrap(async (req, res) => {
   await db();
