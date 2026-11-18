@@ -44,3 +44,42 @@
 @media(max-width:620px){.job-search-fields{grid-template-columns:1fr}.job-card-bottom{align-items:flex-start;flex-direction:column}.job-count{align-self:flex-start}}
 
 .job-apply{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:7px;background:#7865dc;color:#fff;padding:9px 12px;font-size:10px;font-weight:700;text-decoration:none}.job-apply:hover{background:#6250c8}
+
+/* Resume template picker */
+.template-picker{border:1px solid #eceaf5;border-radius:11px;padding:13px;background:#fbfaff}
+.template-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.template-heading h4{margin:0!important}.template-heading small{font-size:9px;color:#9298a8}
+.template-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.template-choice{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:8px;border:1px solid #e9e8f0;border-radius:9px;background:#fff;text-align:left;color:#30374c;cursor:pointer}
+.template-choice.active{border:1.5px solid #7968dc;background:#f7f5ff;box-shadow:0 0 0 2px #eeeaff}
+.template-choice b{font-size:10px}.template-choice small{font-size:8px;color:#9298a8;line-height:1.3}.template-choice em{font-size:8px;color:#6b5bd0;font-style:normal;display:flex;align-items:center;gap:3px}
+.template-thumb{width:100%;height:67px;border:1px solid #e8e8ee;border-radius:4px;background:#fff;padding:9px 7px;display:flex;flex-direction:column;gap:5px;overflow:hidden}
+.template-thumb i{display:block;height:3px;width:72%;background:#d9dce5;border-radius:2px}.template-thumb i:first-child{width:45%;height:7px;background:#7770a8}.template-thumb i:nth-child(2){width:85%;height:2px}.template-thumb i:nth-child(3){width:95%;margin-top:5px}.template-thumb i:nth-child(4){width:65%}
+.thumb-professional{border-top:5px solid #263b5b;border-radius:3px}.thumb-professional i:first-child{background:#263b5b}
+.thumb-minimal{border:0;border-left:3px solid #9298a8;border-radius:0}.thumb-minimal i:first-child{background:#333}
+.thumb-creative{background:#f4f0ff;border:1px solid #d9d0ff}.thumb-creative i:first-child{background:#8868db}
+.preview-template-name{font-size:9px;color:#8b91a2;font-weight:500;margin-left:6px}
+.paper{transition:all .18s ease}
+.paper.template-professional{font-family:Georgia,serif;border-top:8px solid #263b5b;padding:26px 30px}
+.paper.template-professional h2{font-family:Georgia,serif;color:#263b5b;font-size:25px;letter-spacing:.2px}
+.paper.template-professional>b{color:#53677f;font-family:Arial,sans-serif}
+.paper.template-professional section h4{color:#263b5b;letter-spacing:1px;border-bottom:1px solid #aeb9c7}
+.paper.template-minimal{border:0;padding:22px 28px;font-family:Arial,sans-serif}
+.paper.template-minimal h2{font:500 26px Arial,sans-serif;color:#242a35;letter-spacing:-.6px}
+.paper.template-minimal>b{color:#555d69;font-weight:500}
+.paper.template-minimal section{margin-top:18px}
+.paper.template-minimal section h4{color:#424b59;border-bottom:1px solid #d6d9de;letter-spacing:1.2px}
+.paper.template-creative{border:0;border-left:9px solid #8868db;padding:25px 27px;background:linear-gradient(135deg,#faf8ff 0%,#fff 40%)}
+.paper.template-creative h2{font-size:27px;color:#5941a7}
+.paper.template-creative>b{color:#8868db}
+.paper.template-creative section h4{color:#7655c5;border-bottom:1px solid #e4dcfa}
+@media(max-width:720px){.template-options{grid-template-columns:repeat(2,minmax(0,1fr))}.template-heading{align-items:flex-start;flex-direction:column}}
+@media print{
+  .app,.main{display:block!important;background:white!important}
+  .main header,.sidebar,.main footer,.preview-banner,.notice{display:none!important}
+  .content{display:block!important;padding:0!important}
+  .pagehead,.editor,.previewcol>.panel>.repeathead,.soft,.review,.template-picker{display:none!important}
+  .builder{display:block!important}
+  .previewcol>.panel{padding:0!important;border:0!important;box-shadow:none!important}
+  .paper{display:block!important;border:0!important;box-shadow:none!important;margin:0!important;min-height:0!important;padding:22px!important}
+}
