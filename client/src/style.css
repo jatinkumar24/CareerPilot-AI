@@ -142,3 +142,7 @@
 .job-card-match-detail{font-size:9px;color:#6d8b7d;margin:0 0 10px}
 @media(max-width:900px){.resume-job-match-controls{grid-template-columns:1fr 1fr}.resume-job-match-controls button{grid-column:1/-1}}
 @media(max-width:620px){.resume-job-match-controls{grid-template-columns:1fr}.resume-job-match-controls button{grid-column:auto}}
+
+
+.job-source-credit{font-size:8px;color:#6d5bd0;text-decoration:underline;white-space:nowrap}
+.job-salary{display:inline-flex;align-items:center;padding:6px 8px;border-radius:5px;background:#edf8f2;color:#328568;font-size:9px;font-weight:700}
