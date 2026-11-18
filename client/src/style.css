@@ -116,3 +116,5 @@
 
 .job-search-fields{grid-template-columns:1.5fr 1fr auto}
 @media(max-width:900px){.job-search-fields{grid-template-columns:1fr 1fr}.job-search-button{grid-column:1/-1}}
+
+.sample-upload{margin:20px 0;padding:18px;border:1px solid #7867df66;border-radius:14px;background:linear-gradient(135deg,#8b72ff12,#5c5ce80a)}.sample-upload-head{display:flex;gap:12px;align-items:flex-start;color:#b9aaff}.sample-upload-head h4{margin:0 0 5px;color:#fff}.sample-upload-head p{margin:0 0 12px;color:#aab2c6;font-size:12px;line-height:1.5}.sample-file-label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:700;color:#d8d9e7}.sample-file-label input{width:100%;padding:10px;border:1px dashed #8273d5;border-radius:8px;background:#0b1020;color:#cbd0e0}.sample-file-name,.sample-privacy{display:block;margin-top:8px;color:#9ca6bb;font-size:11px;line-height:1.5}.sample-mode{display:grid;gap:8px;margin:14px 0}.sample-mode label{display:flex;align-items:center;gap:8px;color:#c8cde0;font-size:12px}.sample-mode input{accent-color:#927aff}.sample-upload button:disabled{opacity:.45;cursor:not-allowed}
