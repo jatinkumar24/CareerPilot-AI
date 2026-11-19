@@ -355,3 +355,19 @@
 .app[data-theme="system"] .roadmap-chips span{background:#18392f;color:#8ce0c2}
 .app[data-theme="system"] .roadmap-chips.missing span{background:#45321f;color:#f2c28c}
 }
+
+
+/* Click-to-cycle appearance control with smooth theme transitions */
+.theme-control.theme-icon-button{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:96px;padding:8px 11px;border:1px solid #e5e7ef;border-radius:10px;background:#fff;color:#6658b8;font:700 11px "DM Sans",sans-serif;cursor:pointer;transition:background-color .28s ease,color .28s ease,border-color .28s ease,box-shadow .28s ease,transform .18s ease}
+.theme-control.theme-icon-button:hover{border-color:#a99bed;background:#f7f5ff;box-shadow:0 3px 12px #7765d51c;transform:translateY(-1px)}
+.theme-control.theme-icon-button:active{transform:scale(.96)}
+.theme-control.theme-icon-button:focus-visible{outline:3px solid #9b8bea66;outline-offset:3px}
+.theme-control.theme-icon-button span{font-size:10px}
+.app[data-theme="dark"] .theme-control.theme-icon-button{background:#202a40;border-color:#36415b;color:#d4cbff}
+.app[data-theme="dark"] .theme-control.theme-icon-button:hover{background:#2b3650;border-color:#8878d4}
+@media(prefers-color-scheme:dark){
+.app[data-theme="system"] .theme-control.theme-icon-button{background:#202a40;border-color:#36415b;color:#d4cbff}
+.app[data-theme="system"] .theme-control.theme-icon-button:hover{background:#2b3650;border-color:#8878d4}
+}
+.app,.app *{transition-property:background-color,color,border-color,box-shadow;transition-duration:.26s;transition-timing-function:ease}
+@media(prefers-reduced-motion:reduce){.app,.app *,.theme-control.theme-icon-button{transition:none!important;animation:none!important}}
