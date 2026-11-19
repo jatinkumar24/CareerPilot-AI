@@ -389,8 +389,9 @@
 
 
 /* Subtle animated ambient background for the landing, auth and workspace screens */
-.landing,.auth,.app{position:relative;isolation:isolate;overflow:hidden}
-.landing::before,.auth::before,.app::before{content:"";position:absolute;z-index:-1;pointer-events:none;width:560px;height:560px;border-radius:50%;filter:blur(85px);opacity:.24;background:radial-gradient(circle at 35% 35%,#8c78ff 0%,#6d73e8 32%,transparent 70%);animation:ambient-drift-one 19s ease-in-out infinite alternate}
+.landing,.auth,.app{position:relative;isolation:isolate}
+.landing>*,.auth>*,.app>*{position:relative;z-index:1}
+.landing::before,.auth::before,.app::before{content:"";position:absolute;z-index:0;pointer-events:none;width:560px;height:560px;border-radius:50%;filter:blur(85px);opacity:.24;background:radial-gradient(circle at 35% 35%,#8c78ff 0%,#6d73e8 32%,transparent 70%);animation:ambient-drift-one 19s ease-in-out infinite alternate}
 .landing::before{top:-250px;right:-140px;opacity:.32}
 .auth::before{top:-240px;left:28%;opacity:.16}
 .app::before{top:-300px;right:2%;opacity:.13}
