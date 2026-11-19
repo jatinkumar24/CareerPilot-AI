@@ -409,3 +409,26 @@
 .app[data-theme="system"] .template-choice em{color:#c7baff}
 .app[data-theme="system"] .preview-template-name{color:#c0c8d8}
 }
+
+
+/* High-specificity dark-mode overrides for the resume template chooser */
+html body .app[data-theme="dark"] .template-picker{background:#171f31!important;border:1px solid #35415a!important;color:#eef2ff!important}
+html body .app[data-theme="dark"] .template-picker .template-heading h4{color:#f4f6ff!important;opacity:1!important}
+html body .app[data-theme="dark"] .template-picker .template-heading small{color:#c0c9dc!important;opacity:1!important}
+html body .app[data-theme="dark"] .template-picker .template-choice{background:#202a40!important;border:1px solid #3b4964!important;color:#f0f3ff!important}
+html body .app[data-theme="dark"] .template-picker .template-choice.active{background:#302a4b!important;border:1.5px solid #9b8bea!important}
+html body .app[data-theme="dark"] .template-picker .template-choice b{color:#f5f6ff!important;opacity:1!important}
+html body .app[data-theme="dark"] .template-picker .template-choice small{color:#c0c9dc!important;opacity:1!important}
+html body .app[data-theme="dark"] .template-picker .template-choice em{color:#d2c8ff!important}
+html body .app[data-theme="dark"] .preview-template-name{color:#d0d7e7!important}
+@media(prefers-color-scheme:dark){
+html body .app[data-theme="system"] .template-picker{background:#171f31!important;border-color:#35415a!important;color:#eef2ff!important}
+html body .app[data-theme="system"] .template-picker .template-heading h4{color:#f4f6ff!important;opacity:1!important}
+html body .app[data-theme="system"] .template-picker .template-heading small{color:#c0c9dc!important;opacity:1!important}
+html body .app[data-theme="system"] .template-picker .template-choice{background:#202a40!important;border-color:#3b4964!important;color:#f0f3ff!important}
+html body .app[data-theme="system"] .template-picker .template-choice.active{background:#302a4b!important;border-color:#9b8bea!important}
+html body .app[data-theme="system"] .template-picker .template-choice b{color:#f5f6ff!important;opacity:1!important}
+html body .app[data-theme="system"] .template-picker .template-choice small{color:#c0c9dc!important;opacity:1!important}
+html body .app[data-theme="system"] .template-picker .template-choice em{color:#d2c8ff!important}
+html body .app[data-theme="system"] .preview-template-name{color:#d0d7e7!important}
+}
