@@ -337,7 +337,7 @@ const roles = {
   "Software Engineer": ["Programming","OOP","Data Structures","Algorithms","SQL","Git","Testing","REST APIs","Problem Solving"],
   "Full Stack Developer": ["HTML","CSS","JavaScript","React","Node.js","REST APIs","SQL or MongoDB","Authentication","Git","Deployment"]
 };
-const normalizeSkill = value => String(value || "").trim().toLowerCase().replace(/\\s+/g, " ");
+const normalizeSkill = value => String(value || "").trim().toLowerCase().replace(/\s+/g, " ");
 const skillAliases = {
   "js":"javascript","react.js":"react","nodejs":"node.js","express":"express.js","mongo":"mongodb",
   "rest":"rest apis","api":"rest apis","spring":"spring boot","springboot":"spring boot",
