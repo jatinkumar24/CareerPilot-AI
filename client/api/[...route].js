@@ -309,21 +309,99 @@ router.post("/roadmap/generate", auth, wrap(async (req, res) => {
 
 const roles = {
   "MERN Stack Developer": ["JavaScript","React","Node.js","Express.js","MongoDB","REST APIs","Git","HTML","CSS","Authentication","Deployment"],
-  "Java Developer": ["Java","OOP","Data Structures","Algorithms","Spring Boot","SQL","REST APIs","Git","JUnit","Maven"],
+  "Java Developer": ["Java","OOP","Data Structures","Algorithms","Collections","Spring Boot","SQL","REST APIs","Git","JUnit","Maven"],
+  "Java Backend Developer": ["Java","OOP","Spring Boot","Spring Security","REST APIs","SQL","JPA/Hibernate","Microservices","JUnit","Maven","Git"],
+  "Java Full Stack Developer": ["Java","OOP","Spring Boot","HTML","CSS","JavaScript","React","SQL","REST APIs","Git","Deployment"],
+  "Spring Boot Developer": ["Java","OOP","Spring Boot","Spring MVC","Spring Data JPA","Spring Security","REST APIs","SQL","JUnit","Maven","Git"],
   "Frontend Developer": ["HTML","CSS","JavaScript","React","Responsive Design","Accessibility","Git","REST APIs","Testing"],
+  "React Developer": ["HTML","CSS","JavaScript","React","Hooks","React Router","State Management","REST APIs","Testing","Git"],
+  "Node.js Developer": ["JavaScript","Node.js","Express.js","REST APIs","Authentication","MongoDB","SQL","Testing","Git","Deployment"],
+  "Python Developer": ["Python","OOP","Data Structures","SQL","APIs","Django or Flask","Testing","Git","Debugging"],
+  "Python Backend Developer": ["Python","FastAPI or Django","REST APIs","SQL","Authentication","Testing","Docker","Git","Deployment"],
+  "AI Engineer": ["Python","Machine Learning","LLMs","Prompt Engineering","Embeddings","Vector Databases","REST APIs","Model Evaluation","Git","Deployment"],
+  "AI / ML Engineer": ["Python","Machine Learning","Statistics","Pandas","NumPy","Scikit-learn","Deep Learning","SQL","Model Evaluation"],
+  "Machine Learning Engineer": ["Python","Statistics","Machine Learning","Scikit-learn","Feature Engineering","Model Evaluation","Deep Learning","Docker","APIs","MLOps"],
   "Data Analyst": ["SQL","Excel","Python","Pandas","Power BI","Statistics","Data Cleaning","Data Visualization","Communication"],
-  "AI / ML Engineer": ["Python","Machine Learning","Statistics","Pandas","NumPy","Scikit-learn","Deep Learning","SQL","Model Evaluation"]
+  "Data Scientist": ["Python","SQL","Statistics","Probability","Pandas","NumPy","Machine Learning","Data Visualization","Model Evaluation"],
+  "Business Analyst": ["Excel","SQL","Requirements Gathering","Documentation","Process Mapping","Power BI","Stakeholder Communication","Data Analysis"],
+  "Cyber Security Analyst": ["Networking","Linux","Security Fundamentals","SIEM","Incident Response","Vulnerability Assessment","Python","Risk Assessment","Cloud Security"],
+  "Security Engineer": ["Networking","Linux","Python","Secure Coding","IAM","SIEM","Cloud Security","Threat Modeling","Automation"],
+  "DevOps Engineer": ["Linux","Git","Docker","Kubernetes","CI/CD","AWS or Azure","Networking","Terraform","Monitoring","Scripting"],
+  "Cloud Engineer": ["Linux","Networking","AWS or Azure","IAM","Cloud Networking","Docker","Terraform","Monitoring","Security"],
+  "QA Engineer": ["Testing Fundamentals","Test Cases","Manual Testing","Automation Testing","Selenium or Playwright","API Testing","SQL","Bug Tracking","Git"],
+  "Software Tester": ["Testing Fundamentals","Test Cases","Manual Testing","Automation Testing","API Testing","SQL","Bug Reporting","Regression Testing"],
+  "Android Developer": ["Kotlin","Java","Android SDK","Android Studio","Jetpack Compose","REST APIs","SQLite","Git","Testing"],
+  "UI/UX Designer": ["User Research","Wireframing","Prototyping","Figma","Visual Design","Accessibility","Usability Testing","Design Systems"],
+  "Database Administrator": ["SQL","Database Design","Indexing","Query Optimization","Backup and Recovery","Security","Monitoring","PostgreSQL or MySQL"],
+  "Power BI Developer": ["Power BI","DAX","Power Query","Data Modeling","SQL","Excel","Data Visualization","ETL","Business Intelligence"],
+  "Software Engineer": ["Programming","OOP","Data Structures","Algorithms","SQL","Git","Testing","REST APIs","Problem Solving"],
+  "Full Stack Developer": ["HTML","CSS","JavaScript","React","Node.js","REST APIs","SQL or MongoDB","Authentication","Git","Deployment"]
+};
+const normalizeSkill = value => String(value || "").trim().toLowerCase().replace(/\\s+/g, " ");
+const skillAliases = {
+  "js":"javascript","react.js":"react","nodejs":"node.js","express":"express.js","mongo":"mongodb",
+  "rest":"rest apis","api":"rest apis","spring":"spring boot","springboot":"spring boot",
+  "oops":"oop","object oriented programming":"oop","data structure":"data structures","dsa":"data structures",
+  "powerbi":"power bi","ml":"machine learning","ai":"artificial intelligence","scikit learn":"scikit-learn",
+  "postgres":"postgresql","amazon web services":"aws","microsoft azure":"azure","html5":"html","css3":"css"
+};
+const canonicalSkill = value => {
+  const key = normalizeSkill(value);
+  return skillAliases[key] || key;
 };
 router.get("/analysis/roles", auth, (_req, res) => res.json(Object.keys(roles)));
-router.post("/analysis/skills", auth, (req, res) => {
-  const role = roles[req.body?.role] ? req.body.role : "MERN Stack Developer";
-  const input = (req.body?.skills || []).map(x => String(x).trim().toLowerCase());
-  const required = roles[role], matched = required.filter(x => input.includes(x.toLowerCase()));
-  const missing = required.filter(x => !input.includes(x.toLowerCase()));
-  res.json({ role, score: Math.round(matched.length / required.length * 100), matched, missing,
-    plan: missing.slice(0, 5).map((skill, i) => ({ skill, priority: i < 2 ? "High" : "Medium",
-      action: "Learn " + skill + " fundamentals, build a practical project and document the result in your portfolio." })) });
-});
+router.post("/analysis/skills", auth, wrap(async (req, res) => {
+  const targetRole = String(req.body?.role || "").trim();
+  if (!roles[targetRole]) return res.status(400).json({ message: "Choose a supported target job role." });
+  const rawSkills = Array.isArray(req.body?.skills) ? req.body.skills
+    : typeof req.body?.skills === "string" ? req.body.skills.split(",") : [];
+  const input = [...new Set(rawSkills.map(canonicalSkill).filter(Boolean))].slice(0, 100);
+  const required = roles[targetRole];
+  const matched = required.filter(skill => input.includes(canonicalSkill(skill)));
+  const missing = required.filter(skill => !input.includes(canonicalSkill(skill)));
+  const score = Math.round((matched.length / Math.max(required.length, 1)) * 100);
+  const fallbackPlan = missing.map((skill, index) => ({
+    skill,
+    priority: index < Math.ceil(missing.length / 3) ? "High" : index < Math.ceil(missing.length * 2 / 3) ? "Medium" : "Low",
+    action: `Learn ${skill} fundamentals, complete a hands-on exercise, then build a small project that demonstrates it.`,
+    resource: "Use official documentation and a practical beginner tutorial."
+  }));
+  let plan = fallbackPlan, summary = `You currently match ${matched.length} of ${required.length} core skills for the ${targetRole} role.`;
+  let analysisMode = "skills-based";
+  if (process.env.GEMINI_API_KEY && missing.length) {
+    try {
+      const prompt = "Act as a practical entry-level career mentor. Create a concise, realistic learning plan for this target role. Use only the supplied missing skills; do not add unrelated skills or claim the user has experience they did not report. Return ONLY JSON: {summary:string, plan:[{skill:string,priority:'High'|'Medium'|'Low',action:string,resource:string}]}. Keep one plan item per missing skill, in the same order. Actions should be specific and project-oriented. Target role: " + targetRole + ". Matched skills: " + JSON.stringify(matched) + ". Missing skills: " + JSON.stringify(missing) + ".";
+      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + encodeURIComponent(process.env.GEMINI_API_KEY), {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.2 } }),
+        signal: AbortSignal.timeout(18000)
+      });
+      if (response.ok) {
+        const payload = await response.json();
+        const raw = payload.candidates?.[0]?.content?.parts?.map(part => part.text || "").join("") || "";
+        const generated = JSON.parse(raw);
+        if (Array.isArray(generated.plan)) {
+          const bySkill = new Map(generated.plan.map(item => [canonicalSkill(item.skill), item]));
+          plan = missing.map((skill, index) => {
+            const item = bySkill.get(canonicalSkill(skill)) || fallbackPlan[index];
+            return { skill, priority: ["High","Medium","Low"].includes(item.priority) ? item.priority : fallbackPlan[index].priority,
+              action: String(item.action || fallbackPlan[index].action).slice(0, 500),
+              resource: String(item.resource || fallbackPlan[index].resource).slice(0, 250) };
+          });
+          summary = String(generated.summary || summary).slice(0, 500);
+          analysisMode = "ai-enhanced";
+        }
+      }
+    } catch (error) {
+      console.warn("Skill gap AI enhancement unavailable; using skills-based analysis:", error.message);
+    }
+  }
+  res.json({
+    role: targetRole, score, matched, missing, plan, summary, analysisMode,
+    requiredSkills: required, providedSkills: input,
+    disclaimer: "This is an indicative skills comparison, not a hiring prediction. Job requirements vary by employer and seniority."
+  });
+}));
 router.post("/analysis/resume", auth, (req, res) => {
   const { personal = {}, skills = [], experience = [], education = [], projects = [] } = req.body || {};
   const checks = [
