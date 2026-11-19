@@ -386,3 +386,18 @@
 .app[data-theme="dark"] .theme-icon{color:#a6afc4}
 .app[data-theme="dark"] .theme-icon:hover,.app[data-theme="dark"] .theme-icon.active{background:#38305f;color:#d7ceff}
 @media(prefers-color-scheme:dark){.app[data-theme="system"] .theme-switcher{background:#202a40;border-color:#36415b;box-shadow:none}.app[data-theme="system"] .theme-icon{color:#a6afc4}.app[data-theme="system"] .theme-icon:hover,.app[data-theme="system"] .theme-icon.active{background:#38305f;color:#d7ceff}}
+
+
+/* Subtle animated ambient background for the landing, auth and workspace screens */
+.landing,.auth,.app{position:relative;isolation:isolate;overflow:hidden}
+.landing::before,.auth::before,.app::before{content:"";position:absolute;z-index:-1;pointer-events:none;width:560px;height:560px;border-radius:50%;filter:blur(85px);opacity:.24;background:radial-gradient(circle at 35% 35%,#8c78ff 0%,#6d73e8 32%,transparent 70%);animation:ambient-drift-one 19s ease-in-out infinite alternate}
+.landing::before{top:-250px;right:-140px;opacity:.32}
+.auth::before{top:-240px;left:28%;opacity:.16}
+.app::before{top:-300px;right:2%;opacity:.13}
+.landing::after,.auth::after,.app::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:440px;height:440px;border-radius:50%;filter:blur(90px);opacity:.16;background:radial-gradient(circle,#5cc9c2 0%,#7a83ec 36%,transparent 72%);animation:ambient-drift-two 24s ease-in-out infinite alternate}
+.landing::after{left:15%;bottom:-250px;opacity:.2}
+.auth::after{right:-200px;bottom:-180px;opacity:.12}
+.app::after{left:20%;bottom:-300px;opacity:.1}
+@keyframes ambient-drift-one{0%{transform:translate3d(0,0,0) scale(.92)}50%{transform:translate3d(-65px,55px,0) scale(1.08)}100%{transform:translate3d(-20px,105px,0) scale(1)}}
+@keyframes ambient-drift-two{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(70px,-45px,0) scale(.9)}100%{transform:translate3d(-35px,-90px,0) scale(1.12)}}
+@media(prefers-reduced-motion:reduce){.landing::before,.landing::after,.auth::before,.auth::after,.app::before,.app::after{animation:none!important}}
