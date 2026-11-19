@@ -5,6 +5,7 @@ import"./style.css";
 const api=axios.create({baseURL:import.meta.env.VITE_API_URL||"/api"});
 api.interceptors.request.use(c=>{const t=localStorage.getItem("cp_token");if(t)c.headers.Authorization="Bearer "+t;return c});
 const SOURCES=["LinkedIn","Naukri","Indeed","Glassdoor","Wellfound","Instahyre","Arbeitnow","Remotive","Jobicy","Himalayas"];
+const demoTitles=["Java Developer","Java Full Stack Developer","Java Backend Developer","MERN Stack Developer","Frontend Developer","React Developer","Node.js Developer","Python Developer","AI Engineer","Machine Learning Engineer","Data Analyst","Cyber Security Analyst","DevOps Engineer","Cloud Engineer","QA Engineer","Software Engineer"];
 const STATUSES=["Saved","Applied","Interview","Rejected","Offer"];
 const slug=s=>String(s||"").trim().toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 function sourceSearch(source,q,location){
