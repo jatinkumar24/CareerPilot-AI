@@ -371,3 +371,18 @@
 }
 .app,.app *{transition-property:background-color,color,border-color,box-shadow;transition-duration:.26s;transition-timing-function:ease}
 @media(prefers-reduced-motion:reduce){.app,.app *,.theme-control.theme-icon-button{transition:none!important;animation:none!important}}
+
+
+/* Minimal three-icon theme picker with hover labels */
+.theme-switcher{display:inline-flex;align-items:center;gap:3px;padding:4px;border:1px solid #e7e8f0;border-radius:11px;background:#fff;box-shadow:0 2px 7px #2029470a}
+.theme-icon{position:relative;display:grid;place-items:center;width:32px;height:30px;padding:0;border:0;border-radius:8px;background:transparent;color:#9299aa;cursor:pointer;transition:background-color .2s ease,color .2s ease,transform .2s ease}
+.theme-icon:hover{background:#f1efff;color:#6e5bd0;transform:translateY(-1px)}
+.theme-icon.active{background:#eeeaff;color:#6958c4}
+.theme-icon:active{transform:scale(.94)}
+.theme-icon:focus-visible{outline:2px solid #9585e8;outline-offset:2px}
+.theme-icon::after{content:attr(data-tooltip);position:absolute;left:50%;top:calc(100% + 9px);z-index:50;transform:translate(-50%,-3px);padding:5px 8px;border-radius:6px;background:#202438;color:#fff;font:600 10px "DM Sans",sans-serif;white-space:nowrap;opacity:0;visibility:hidden;pointer-events:none;box-shadow:0 4px 12px #10142626;transition:opacity .16s ease,transform .16s ease,visibility .16s}
+.theme-icon:hover::after,.theme-icon:focus-visible::after{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.app[data-theme="dark"] .theme-switcher{background:#202a40;border-color:#36415b;box-shadow:none}
+.app[data-theme="dark"] .theme-icon{color:#a6afc4}
+.app[data-theme="dark"] .theme-icon:hover,.app[data-theme="dark"] .theme-icon.active{background:#38305f;color:#d7ceff}
+@media(prefers-color-scheme:dark){.app[data-theme="system"] .theme-switcher{background:#202a40;border-color:#36415b;box-shadow:none}.app[data-theme="system"] .theme-icon{color:#a6afc4}.app[data-theme="system"] .theme-icon:hover,.app[data-theme="system"] .theme-icon.active{background:#38305f;color:#d7ceff}}
