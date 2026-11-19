@@ -78,7 +78,6 @@ function Roadmap({resumes=[],preview=false,onMessage=()=>{}}){
   </section>
   <section className="panel roadmap-resources"><h3>Make this plan yours</h3><p>Work through each phase in order. Build the suggested projects, review your skills and update your resume as you progress.</p><div className="roadmap-chips"><span>Learn the concept</span><span>Practice hands-on</span><span>Build a project</span><span>Review and improve</span></div><p><a href={referenceLinks[targetRole]||"https://roadmap.sh/roadmaps/"} target="_blank" rel="noreferrer">Open a related learning reference ↗</a></p></section>
   <p className="roadmap-disclaimer">{roadmap.disclaimer||"This plan is AI-generated guidance based on the resume selected. Verify technical details and adjust the pace to your schedule."}</p></>}
-  }
  </div>
 }
 
