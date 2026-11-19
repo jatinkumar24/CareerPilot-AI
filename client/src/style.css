@@ -432,3 +432,24 @@ html body .app[data-theme="system"] .template-picker .template-choice small{colo
 html body .app[data-theme="system"] .template-picker .template-choice em{color:#d2c8ff!important}
 html body .app[data-theme="system"] .preview-template-name{color:#d0d7e7!important}
 }
+
+
+/* Resume canvas is intentionally white in every app theme: keep all preview copy legible */
+.app[data-theme="dark"] .paper,
+.app[data-theme="system"] .paper{background:#fff!important;color:#293249!important}
+.app[data-theme="dark"] .paper h2,
+.app[data-theme="system"] .paper h2{color:#202b3d!important}
+.app[data-theme="dark"] .paper>b,
+.app[data-theme="system"] .paper>b{color:#6655c5!important}
+.app[data-theme="dark"] .paper p,
+.app[data-theme="system"] .paper p{color:#465166!important}
+.app[data-theme="dark"] .paper section h4,
+.app[data-theme="system"] .paper section h4{color:#51458f!important;border-bottom-color:#d9dce5!important;opacity:1!important}
+.app[data-theme="dark"] .paper section p b,
+.app[data-theme="system"] .paper section p b{color:#293249!important}
+.app[data-theme="dark"] .paper.template-professional section h4,
+.app[data-theme="system"] .paper.template-professional section h4{color:#263b5b!important}
+.app[data-theme="dark"] .paper.template-minimal section h4,
+.app[data-theme="system"] .paper.template-minimal section h4{color:#424b59!important}
+.app[data-theme="dark"] .paper.template-creative section h4,
+.app[data-theme="system"] .paper.template-creative section h4{color:#7655c5!important}
