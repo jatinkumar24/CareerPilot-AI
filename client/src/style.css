@@ -222,3 +222,136 @@
 .sample-mode input[type="radio"]{display:block!important;appearance:auto!important;-webkit-appearance:radio!important;width:16px!important;min-width:16px!important;max-width:16px!important;height:16px!important;min-height:16px!important;margin:2px 0 0!important;padding:0!important;border:0!important;border-radius:50%!important;box-shadow:none!important;flex:0 0 16px!important;accent-color:#7865d8;cursor:pointer}
 .sample-mode label b,.sample-mode label small{white-space:normal;overflow-wrap:anywhere}
 @media(max-width:620px){.sample-mode{grid-template-columns:minmax(0,1fr)}}
+
+/* Workspace appearance selector */
+.header-tools{display:flex;align-items:center;gap:18px}
+.theme-control{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;border:1px solid #e5e7ef;border-radius:9px;background:#fff;color:#737d90}
+.theme-control select{border:0;outline:0;background:transparent;color:#424c61;font-size:10px;font-weight:700;cursor:pointer}
+.theme-control:focus-within{border-color:#9b8bea;box-shadow:0 0 0 3px #9b8bea22}
+@media(max-width:620px){.main header{padding:0 14px}.header-tools{gap:8px}.theme-control{padding:5px 6px}.online{font-size:9px}}
+.app[data-theme="dark"]{background:#0d1220;color:#e7eaf3;color-scheme:dark}
+.app[data-theme="dark"] .main{background:#0d1220;color:#e7eaf3}
+.app[data-theme="dark"] .main header{background:#151c2d;border-color:#283149;color:#aeb7ca}
+.app[data-theme="dark"] .main header b{color:#f1f3fa}
+.app[data-theme="dark"] .theme-control{background:#202a40;border-color:#36415b;color:#c4cbe0}
+.app[data-theme="dark"] .theme-control select{color:#edf0fa}
+.app[data-theme="dark"] .content{color:#e7eaf3}
+.app[data-theme="dark"] .pagehead h1,.app[data-theme="dark"] .panel h3,.app[data-theme="dark"] .panel h4,.app[data-theme="dark"] .resumeitem b,.app[data-theme="dark"] .repeathead h4{color:#edf0fa}
+.app[data-theme="dark"] .pagehead p,.app[data-theme="dark"] .panel>p,.app[data-theme="dark"] .stats small,.app[data-theme="dark"] .stats span{color:#a4aec3}
+.app[data-theme="dark"] .panel,.app[data-theme="dark"] .stats article,.app[data-theme="dark"] .roadmap-phase-content,.app[data-theme="dark"] .job-card,.app[data-theme="dark"] .application-tracker{background:#171f31;border-color:#2b354b;color:#e7eaf3}
+.app[data-theme="dark"] .editor input,.app[data-theme="dark"] .editor textarea,.app[data-theme="dark"] .skillgrid textarea,.app[data-theme="dark"] .skillgrid select,.app[data-theme="dark"] .roadmap-controls select,.app[data-theme="dark"] .resume-job-match-controls input{background:#101829;border-color:#39445d;color:#edf0fa}
+.app[data-theme="dark"] .editor label,.app[data-theme="dark"] .skillgrid label,.app[data-theme="dark"] .repeatitem label{color:#c1c9da}
+.app[data-theme="dark"] .repeatitem,.app[data-theme="dark"] .resumeitem,.app[data-theme="dark"] .repeat{border-color:#2b354b}
+.app[data-theme="dark"] .callout{background:#211f3a;border-color:#39345f}
+.app[data-theme="dark"] .callout h3{color:#f0edff}
+.app[data-theme="dark"] .callout p{color:#b7b4d0}
+.app[data-theme="dark"] .resumeitem button,.app[data-theme="dark"] .repeathead button{color:#b8aaff}
+.app[data-theme="dark"] .paper,.app[data-theme="dark"] .job-preview-modal{background:#fff;color:#293249}
+.app[data-theme="dark"] .result .bar{background:#30394d}
+.app[data-theme="dark"] .plan{background:#202a40;color:#e7eaf3}
+.app[data-theme="dark"] .plan b{color:#f0f2f8}
+.app[data-theme="dark"] .plan small{color:#aeb8ca}
+.app[data-theme="dark"] .result>p,.app[data-theme="dark"] .result>small{color:#aeb8ca}
+.app[data-theme="dark"] .chips .missing{background:#302a4b;color:#c5b8ff}
+.app[data-theme="dark"] .chips span{background:#18392f;color:#8ce0c2}
+.app[data-theme="dark"] .roadmap-builder>div>p,.app[data-theme="dark"] .roadmap-resources>p,.app[data-theme="dark"] .roadmap-phase-heading p,.app[data-theme="dark"] .roadmap-disclaimer{color:#aeb8ca}
+.app[data-theme="dark"] .roadmap-phase-content h4{color:#cbd2e1}
+.app[data-theme="dark"] .roadmap-phase-content ul{color:#b2bdd0}
+.app[data-theme="dark"] .roadmap-section-title h2,.app[data-theme="dark"] .roadmap-suggestions h2{color:#eef1f8}
+.app[data-theme="dark"] .roadmap-resources a,.app[data-theme="dark"] .roadmap-path-grid a,.app[data-theme="dark"] .demo-title-grid button,.app[data-theme="dark"] .job-mode-switch button{background:#202a40;border-color:#35415a;color:#e7eaf3}
+.app[data-theme="dark"] .roadmap-resources a b,.app[data-theme="dark"] .roadmap-path-grid b,.app[data-theme="dark"] .demo-title-grid b{color:#c8bdff}
+.app[data-theme="dark"] .roadmap-resources a small,.app[data-theme="dark"] .roadmap-path-grid small,.app[data-theme="dark"] .demo-title-grid small{color:#aeb8ca}
+.app[data-theme="dark"] .job-search-mode h3,.app[data-theme="dark"] .job-title-demo h3{color:#edf0fa}
+.app[data-theme="dark"] .job-search-mode p,.app[data-theme="dark"] .job-title-demo p{color:#aeb8ca}
+.app[data-theme="dark"] .job-results-head,.app[data-theme="dark"] .tracker-heading{color:#edf0fa}
+.app[data-theme="dark"] .tracker-item{background:#202a40;border-color:#35415a}
+.app[data-theme="dark"] .tracker-main b{color:#edf0fa}
+.app[data-theme="dark"] .tracker-main span{color:#aeb8ca}
+.app[data-theme="dark"] .tracker-item select,.app[data-theme="dark"] .job-source-filter select{background:#101829;border-color:#39445d;color:#edf0fa}
+.app[data-theme="dark"] .notice{background:#18392f;color:#a5e8d1}
+.app[data-theme="dark"] .main footer{border-color:#283149;color:#aeb8ca}
+.app[data-theme="dark"] .main footer .brand{color:#edf0fa}
+.app[data-theme="dark"] .preview-banner{background:#202a40;border-color:#35415a;color:#dce2f0}
+.app[data-theme="dark"] .sample-upload{background:linear-gradient(145deg,#211f3a,#192238);border-color:#40396a}
+.app[data-theme="dark"] .sample-upload-head h4,.app[data-theme="dark"] .sample-file-label{color:#f0edff}
+.app[data-theme="dark"] .sample-upload-head p,.app[data-theme="dark"] .sample-file-control small,.app[data-theme="dark"] .sample-privacy{color:#aeb8ca}
+.app[data-theme="dark"] .sample-file-control{background:#111a2c;border-color:#655a9b}
+.app[data-theme="dark"] .sample-file-control strong{color:#e2dcff}
+.app[data-theme="dark"] .sample-mode-title{color:#d9d4f3}
+.app[data-theme="dark"] .sample-mode label{background:#151e30;border-color:#39445d;color:#c4cce0}
+.app[data-theme="dark"] .sample-mode label b{color:#edf0fa}
+.app[data-theme="dark"] .sample-mode label small{color:#aeb8ca}
+.app[data-theme="dark"] .sample-mode label.selected{background:#292449;border-color:#8c7ae1}
+.app[data-theme="dark"] .template-choice{background:#202a40;border-color:#35415a;color:#edf0fa}
+.app[data-theme="dark"] .template-choice b{color:#edf0fa}
+.app[data-theme="dark"] .template-choice small{color:#aeb8ca}
+.app[data-theme="dark"] .job-source-badge{background:#302a4b;color:#c5b8ff}
+.app[data-theme="dark"] .job-preview-button{background:#302a4b;border-color:#49416f;color:#d4cbff}
+.app[data-theme="dark"] .roadmap-score{background:#302a4b;color:#e3dcff}
+.app[data-theme="dark"] .roadmap-score span{color:#c2b9e2}
+.app[data-theme="dark"] .roadmap-chips span{background:#18392f;color:#8ce0c2}
+.app[data-theme="dark"] .roadmap-chips.missing span{background:#45321f;color:#f2c28c}
+@media(prefers-color-scheme:dark){
+.app[data-theme="system"]{background:#0d1220;color:#e7eaf3;color-scheme:dark}
+.app[data-theme="system"] .main{background:#0d1220;color:#e7eaf3}
+.app[data-theme="system"] .main header{background:#151c2d;border-color:#283149;color:#aeb7ca}
+.app[data-theme="system"] .main header b{color:#f1f3fa}
+.app[data-theme="system"] .theme-control{background:#202a40;border-color:#36415b;color:#c4cbe0}
+.app[data-theme="system"] .theme-control select{color:#edf0fa}
+.app[data-theme="system"] .content{color:#e7eaf3}
+.app[data-theme="system"] .pagehead h1,.app[data-theme="system"] .panel h3,.app[data-theme="system"] .panel h4,.app[data-theme="system"] .resumeitem b,.app[data-theme="system"] .repeathead h4{color:#edf0fa}
+.app[data-theme="system"] .pagehead p,.app[data-theme="system"] .panel>p,.app[data-theme="system"] .stats small,.app[data-theme="system"] .stats span{color:#a4aec3}
+.app[data-theme="system"] .panel,.app[data-theme="system"] .stats article,.app[data-theme="system"] .roadmap-phase-content,.app[data-theme="system"] .application-tracker{background:#171f31;border-color:#2b354b;color:#e7eaf3}
+.app[data-theme="system"] .editor input,.app[data-theme="system"] .editor textarea,.app[data-theme="system"] .skillgrid textarea,.app[data-theme="system"] .skillgrid select,.app[data-theme="system"] .roadmap-controls select,.app[data-theme="system"] .resume-job-match-controls input{background:#101829;border-color:#39445d;color:#edf0fa}
+.app[data-theme="system"] .editor label,.app[data-theme="system"] .skillgrid label,.app[data-theme="system"] .repeatitem label{color:#c1c9da}
+.app[data-theme="system"] .repeatitem,.app[data-theme="system"] .resumeitem,.app[data-theme="system"] .repeat{border-color:#2b354b}
+.app[data-theme="system"] .callout{background:#211f3a;border-color:#39345f}
+.app[data-theme="system"] .callout h3{color:#f0edff}
+.app[data-theme="system"] .callout p{color:#b7b4d0}
+.app[data-theme="system"] .resumeitem button,.app[data-theme="system"] .repeathead button{color:#b8aaff}
+.app[data-theme="system"] .paper,.app[data-theme="system"] .job-preview-modal{background:#fff;color:#293249}
+.app[data-theme="system"] .result .bar{background:#30394d}
+.app[data-theme="system"] .plan{background:#202a40;color:#e7eaf3}
+.app[data-theme="system"] .plan b{color:#f0f2f8}
+.app[data-theme="system"] .plan small{color:#aeb8ca}
+.app[data-theme="system"] .result>p,.app[data-theme="system"] .result>small{color:#aeb8ca}
+.app[data-theme="system"] .chips .missing{background:#302a4b;color:#c5b8ff}
+.app[data-theme="system"] .chips span{background:#18392f;color:#8ce0c2}
+.app[data-theme="system"] .roadmap-builder>div>p,.app[data-theme="system"] .roadmap-resources>p,.app[data-theme="system"] .roadmap-phase-heading p,.app[data-theme="system"] .roadmap-disclaimer{color:#aeb8ca}
+.app[data-theme="system"] .roadmap-phase-content h4{color:#cbd2e1}
+.app[data-theme="system"] .roadmap-phase-content ul{color:#b2bdd0}
+.app[data-theme="system"] .roadmap-section-title h2,.app[data-theme="system"] .roadmap-suggestions h2{color:#eef1f8}
+.app[data-theme="system"] .roadmap-resources a,.app[data-theme="system"] .roadmap-path-grid a,.app[data-theme="system"] .demo-title-grid button,.app[data-theme="system"] .job-mode-switch button{background:#202a40;border-color:#35415a;color:#e7eaf3}
+.app[data-theme="system"] .roadmap-resources a b,.app[data-theme="system"] .roadmap-path-grid b,.app[data-theme="system"] .demo-title-grid b{color:#c8bdff}
+.app[data-theme="system"] .roadmap-resources a small,.app[data-theme="system"] .roadmap-path-grid small,.app[data-theme="system"] .demo-title-grid small{color:#aeb8ca}
+.app[data-theme="system"] .job-search-mode h3,.app[data-theme="system"] .job-title-demo h3{color:#edf0fa}
+.app[data-theme="system"] .job-search-mode p,.app[data-theme="system"] .job-title-demo p{color:#aeb8ca}
+.app[data-theme="system"] .job-results-head,.app[data-theme="system"] .tracker-heading{color:#edf0fa}
+.app[data-theme="system"] .tracker-item{background:#202a40;border-color:#35415a}
+.app[data-theme="system"] .tracker-main b{color:#edf0fa}
+.app[data-theme="system"] .tracker-main span{color:#aeb8ca}
+.app[data-theme="system"] .tracker-item select,.app[data-theme="system"] .job-source-filter select{background:#101829;border-color:#39445d;color:#edf0fa}
+.app[data-theme="system"] .notice{background:#18392f;color:#a5e8d1}
+.app[data-theme="system"] .main footer{border-color:#283149;color:#aeb8ca}
+.app[data-theme="system"] .main footer .brand{color:#edf0fa}
+.app[data-theme="system"] .preview-banner{background:#202a40;border-color:#35415a;color:#dce2f0}
+.app[data-theme="system"] .sample-upload{background:linear-gradient(145deg,#211f3a,#192238);border-color:#40396a}
+.app[data-theme="system"] .sample-upload-head h4,.app[data-theme="system"] .sample-file-label{color:#f0edff}
+.app[data-theme="system"] .sample-upload-head p,.app[data-theme="system"] .sample-file-control small,.app[data-theme="system"] .sample-privacy{color:#aeb8ca}
+.app[data-theme="system"] .sample-file-control{background:#111a2c;border-color:#655a9b}
+.app[data-theme="system"] .sample-file-control strong{color:#e2dcff}
+.app[data-theme="system"] .sample-mode-title{color:#d9d4f3}
+.app[data-theme="system"] .sample-mode label{background:#151e30;border-color:#39445d;color:#c4cce0}
+.app[data-theme="system"] .sample-mode label b{color:#edf0fa}
+.app[data-theme="system"] .sample-mode label small{color:#aeb8ca}
+.app[data-theme="system"] .sample-mode label.selected{background:#292449;border-color:#8c7ae1}
+.app[data-theme="system"] .template-choice{background:#202a40;border-color:#35415a;color:#edf0fa}
+.app[data-theme="system"] .template-choice b{color:#edf0fa}
+.app[data-theme="system"] .template-choice small{color:#aeb8ca}
+.app[data-theme="system"] .job-source-badge{background:#302a4b;color:#c5b8ff}
+.app[data-theme="system"] .job-preview-button{background:#302a4b;border-color:#49416f;color:#d4cbff}
+.app[data-theme="system"] .roadmap-score{background:#302a4b;color:#e3dcff}
+.app[data-theme="system"] .roadmap-score span{color:#c2b9e2}
+.app[data-theme="system"] .roadmap-chips span{background:#18392f;color:#8ce0c2}
+.app[data-theme="system"] .roadmap-chips.missing span{background:#45321f;color:#f2c28c}
+}
